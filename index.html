@@ -3,70 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>متجر الأدوات المدرسية</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
+<title>متجر السلة</title>
 
 <style>
-body{
-  margin:0;
-  font-family:'Cairo',sans-serif;
-  background:#f4f6f8;
-  display:flex;
-}
-
-/* ===== السلة ===== */
-.cart{
-  width:260px;
-  background:#fff;
-  height:100vh;
-  position:fixed;
-  left:0;
-  top:0;
-  padding:10px;
-  overflow:auto;
-  border-right:1px solid #eee;
-}
-
-.main{
-  margin-left:260px;
-  width:100%;
-  padding:10px;
-}
-
-.item{
-  border-bottom:1px solid #eee;
-  padding:6px 0;
-  font-size:13px;
-}
-
-.qty button{
-  padding:2px 6px;
-  margin:2px;
-}
-
-/* المنتجات */
-.card{
-  background:#fff;
-  padding:10px;
-  border-radius:10px;
-  margin:5px;
-}
-
-.products{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:10px;
-}
-
-.btn{
-  width:100%;
-  padding:6px;
-  background:#f59e0b;
-  color:#fff;
-  border:none;
-  border-radius:8px;
-}
+body{font-family:Cairo;background:#f4f6f8;margin:0;display:flex}
+.cart{width:260px;background:#fff;height:100vh;position:fixed;left:0;padding:10px;overflow:auto}
+.main{margin-left:260px;padding:10px;width:100%}
+.item{border-bottom:1px solid #eee;padding:6px}
+button{cursor:pointer}
+.btn{background:#f59e0b;color:#fff;padding:6px;border:none;width:100%}
+.card{background:#fff;padding:10px;margin:5px;border-radius:8px}
 </style>
 </head>
 
@@ -74,38 +20,40 @@ body{
 
 <!-- 🛒 السلة -->
 <div class="cart">
-  <h3>🛒 السلة</h3>
-  <div id="cartItems"></div>
 
-  <hr>
+<h3>🛒 السلة</h3>
+<div id="cartItems"></div>
 
-  <div>
-    المجموع: <b id="total">0</b><br>
-    التوصيل: 200<br>
-    الإجمالي: <b id="final">0</b>
-  </div>
+<hr>
 
-  <hr>
+المجموع: <b id="total">0</b><br>
+التوصيل: 200<br>
+الإجمالي: <b id="final">0</b>
 
-  <input id="firstName" placeholder="الاسم"><br><br>
-  <input id="lastName" placeholder="اللقب"><br><br>
-  <input id="phone" placeholder="الهاتف"><br><br>
-  <input id="address" placeholder="العنوان"><br><br>
+<hr>
 
-  <button onclick="sendOrder()" class="btn">إرسال الطلب</button>
+<input id="firstName" placeholder="الاسم"><br><br>
+<input id="lastName" placeholder="اللقب"><br><br>
+<input id="phone" placeholder="الهاتف"><br><br>
+<input id="address" placeholder="العنوان"><br><br>
+
+<button class="btn" onclick="sendOrder()">إرسال الطلب</button>
+
 </div>
 
 <!-- المنتجات -->
 <div class="main">
-  <div class="products" id="products"></div>
+<div id="products"></div>
 </div>
 
 <script>
 
-/* ===== المنتجات ===== */
+/* 🔥 رابط Google Script مباشرة */
+const GOOGLE_URL = "https://script.google.com/macros/s/AKfycbytv6JbE8cvmbuTi9sjIFkAQmRH8sDHOhFNCZkXkdfm9thQSAcCrzU5JmNxUnzbTJZZ5w/exec";
+
 const PRODUCTS = [
-  {name:"كراس 96 صفحة", price:120},
-  {name:"قلم أزرق", price:30},
+  {name:"كراس", price:120},
+  {name:"قلم", price:30},
   {name:"ممحاة", price:50}
 ];
 
@@ -113,7 +61,7 @@ let cart = [];
 
 /* عرض المنتجات */
 function renderProducts(){
-  let html = "";
+  let html="";
   PRODUCTS.forEach((p,i)=>{
     html += `
       <div class="card">
@@ -123,14 +71,13 @@ function renderProducts(){
       </div>
     `;
   });
-
   document.getElementById("products").innerHTML = html;
 }
 
 /* إضافة للسلة */
 function add(i){
   let p = PRODUCTS[i];
-  let f = cart.find(x => x.name === p.name);
+  let f = cart.find(x=>x.name===p.name);
 
   if(f) f.qty++;
   else cart.push({...p, qty:1});
@@ -140,90 +87,78 @@ function add(i){
 
 /* تحديث السلة */
 function updateCart(){
-  let html = "";
-  let total = 0;
+  let html="";
+  let total=0;
 
   cart.forEach((p,i)=>{
-    let sub = p.price * p.qty;
-    total += sub;
+    let sub=p.price*p.qty;
+    total+=sub;
 
-    html += `
+    html+=`
       <div class="item">
-        ${p.name}<br>
-        ${p.price} x ${p.qty} = ${sub}
-        <div class="qty">
-          <button onclick="change(${i},-1)">-</button>
-          <button onclick="change(${i},1)">+</button>
-        </div>
+        ${p.name} x${p.qty} = ${sub}
+        <button onclick="change(${i},-1)">-</button>
+        <button onclick="change(${i},1)">+</button>
       </div>
     `;
   });
 
-  document.getElementById("cartItems").innerHTML = html;
-  document.getElementById("total").innerText = total;
-  document.getElementById("final").innerText = total + 200;
+  document.getElementById("cartItems").innerHTML=html;
+  document.getElementById("total").innerText=total;
+  document.getElementById("final").innerText=total+200;
 }
 
 /* تغيير الكمية */
 function change(i,v){
-  cart[i].qty += v;
-  if(cart[i].qty <= 0) cart.splice(i,1);
+  cart[i].qty+=v;
+  if(cart[i].qty<=0) cart.splice(i,1);
   updateCart();
 }
 
-/* 🚀 إرسال الطلب (مُصحح 100%) */
+/* 🚀 إرسال مباشر إلى Google Sheets */
 async function sendOrder(){
 
-  if(cart.length === 0){
-    alert("السلة فارغة!");
+  if(cart.length===0){
+    alert("السلة فارغة");
     return;
   }
 
   const total = Number(document.getElementById("final").innerText);
 
   const payload = {
-    firstName: document.getElementById("firstName").value,
-    lastName: document.getElementById("lastName").value,
-    phone: document.getElementById("phone").value,
-    address: document.getElementById("address").value,
+    firstName: firstName.value,
+    lastName: lastName.value,
+    phone: phone.value,
+    address: address.value,
     shipping: 200,
     total: total,
-
-    // 🔥 أهم جزء (السلة)
-    products: cart.map(p => ({
-      name: p.name,
-      qty: p.qty,
-      price: p.price
-    }))
+    products: cart
   };
 
-  console.log("SEND:", payload);
+  console.log("SENDING:", payload);
 
   try {
-    const res = await fetch("/api/send", {
+    const res = await fetch(GOOGLE_URL, {
       method: "POST",
-      headers: {"Content-Type":"application/json"},
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(payload)
     });
 
-    const data = await res.json();
+    const text = await res.text();
+    console.log("RESPONSE:", text);
 
-    console.log("RESULT:", data);
+    alert("تم إرسال الطلب ✔");
 
-    if(data.ok){
-      alert("تم إرسال الطلب ✔");
-      cart = [];
-      updateCart();
-    } else {
-      alert("فشل الإرسال ❌");
-    }
+    cart = [];
+    updateCart();
 
   } catch(err){
-    alert("خطأ: " + err.message);
+    alert("خطأ في الإرسال: " + err.message);
   }
 }
 
-/* init */
 renderProducts();
 updateCart();
 
