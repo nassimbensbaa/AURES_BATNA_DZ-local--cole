@@ -1,61 +1,56 @@
-export default async function handler(req, res) {
-
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
-  if (req.method !== "POST") {
-    return res.status(405).json({ ok: false });
-  }
-
+function doPost(e) {
   try {
 
-    const URL = process.env.SCRIT;
+    const sheet = SpreadsheetApp
+      .getActiveSpreadsheet()
+      .getSheetByName("Sheet1");
 
-    const body = req.body || {};
+    let data = {};
 
-    // ⚠️ مهم: تحويل cart إلى productName مثل كودك القديم
-    let productName = "";
-
-    if (Array.isArray(body.products)) {
-      productName = body.products
-        .map(p => `${p.name} x${p.qty}`)
-        .join(" | ");
+    // استقبال JSON من Vercel API
+    if (e.postData && e.postData.contents) {
+      data = JSON.parse(e.postData.contents);
     }
 
-    const payload = {
-      firstName: body.firstName || "",
-      lastName: body.lastName || "",
-      phone: body.phone || "",
-      address: body.address || "",
-      shipping: 200,
-      total: body.total || 0,
-      productName: productName
-    };
+    const fullName = ((data.firstName || "") + " " + (data.lastName || "")).trim();
 
-    const response = await fetch(URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
+    // تحويل السلة إذا موجودة
+    let productsText = "";
 
-    const text = await response.text();
+    if (Array.isArray(data.products)) {
+      productsText = data.products.map(p =>
+        `${p.name} x${p.qty} = ${(p.price * p.qty)} DA`
+      ).join(" | ");
+    } else {
+      productsText = data.productName || "";
+    }
 
-    return res.status(200).json({
-      ok: true,
-      google_response: text
-    });
+    sheet.appendRow([
+      new Date(),            // التاريخ
+      fullName,              // الاسم الكامل
+      data.phone || "",      // الهاتف
+      data.address || "",    // العنوان
+      data.shipping || 50,   // التوصيل
+      data.total || 0,       // المجموع
+      productsText          // المنتجات
+    ]);
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: true }))
+      .setMimeType(ContentService.MimeType.JSON);
 
   } catch (err) {
-    return res.status(500).json({
-      ok: false,
-      error: err.message
-    });
+
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        ok: false,
+        error: err.toString()
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+/* اختبار */
+function doGet() {
+  return ContentService.createTextOutput("OK WORKING ✔");
 }
