@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متجر الأدوات المدرسية</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  font-family:'Cairo',sans-serif;
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#f4f6f8;
+}
+
+/* ===== المنتجات ===== */
+.main{
+  width:100%;
+  padding:10px;
+  padding-bottom:420px;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:8px;
+}
+
+.card{
+  background:white;
+  border-radius:10px;
+  padding:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+
+.card img{
+  width:100%;
+  height:80px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+.price{
+  color:#f59e0b;
+  font-weight:bold;
+}
+
+.btn{
+  width:100%;
+  padding:5px;
+  background:#f59e0b;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* ===== السلة في الأسفل ===== */
+.cart{
+  width:100%;
+  background:white;
+  position:fixed;
+  bottom:0;
+  right:0;
+  left:0;
+  border-top:2px solid #eee;
+  padding:10px;
+  max-height:400px;
+  overflow-y:auto;
+  z-index:999;
+  box-shadow:0 -3px 10px rgba(0,0,0,.1);
+}
+
+.item{
+  border-bottom:1px solid #eee;
+  padding:6px 0;
+}
+
+.qty button{
+  padding:2px 6px;
+  border:none;
+  background:#ddd;
+  cursor:pointer;
+  border-radius:5px;
+}
+
+/* ===== زر تأكيد الطلب ===== */
+.checkout-btn{
+  width:100%;
+  padding:8px;
+  margin-top:10px;
+  background:linear-gradient(135deg,#f59e0b,#f97316);
+  color:white;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.checkout-form{
+  display:none;
+  margin-top:10px;
+  padding:8px;
+  border-top:1px solid #eee;
+}
+
+.checkout-form input{
+  width:100%;
+  padding:6px;
+  margin:4px 0;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:12px;
+}
+
+.submit{
+  width:100%;
+  padding:8px;
+  background:#10b981;
+  color:white;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  margin-top:5px;
+}
+
+.summary{
+  font-size:12px;
+}
+
+/* ===== الهاتف ===== */
+@media(max-width:768px){
+
+.cart{
+  max-height:300px;
+}
+
+.main{
+  padding-bottom:340px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- المنتجات -->
+<div class="main">
+  <div class="products" id="products"></div>
+</div>
+
+<!-- السلة -->
+<div class="cart">
+
+<h3>🛒 السلة</h3>
+
+<div id="cartItems"></div>
+
+<hr>
+
+<div class="summary">
+المجموع: <b id="total">0</b> دج<br>
+التوصيل: 200 دج<br>
+الإجمالي: <b id="final">200</b> دج
+</div>
+
+<button class="checkout-btn" onclick="toggleForm()">
+🧾 تأكيد الطلب
+</button>
+
+<div class="checkout-form" id="form">
+
+<input id="firstName" placeholder="الاسم">
+<input id="lastName" placeholder="اللقب">
+<input id="phone" placeholder="رقم الهاتف">
+<input id="address" placeholder="العنوان">
+
+<button class="submit" onclick="sendOrder()">
+إرسال الطلب
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const PRODUCTS=[
+ {name:"كراس 96 صفحة",price:120,image:"nassim01.jpg"},
+ {name:"قلم أزرق",price:30,image:"nassim02.jpg"},
+ {name:"ممحاة",price:50,image:"nassim03.jpg"}
+];
+
+let cart=[];
+
+/* عرض المنتجات */
+function renderProducts(){
+let html="";
+
+PRODUCTS.forEach((p,i)=>{
+html+=`
+<div class="card">
+<img src="images/${p.image}" alt="${p.name}">
+<h4>${p.name}</h4>
+<div class="price">${p.price} دج</div>
+<button class="btn" onclick="add(${i})">إضافة</button>
+</div>
+`;
+});
+
+document.getElementById("products").innerHTML=html;
+}
+
+/* إضافة للسلة */
+function add(i){
+let p=PRODUCTS[i];
+let f=cart.find(x=>x.name===p.name);
+
+if(f) f.qty++;
+else cart.push({...p,qty:1});
+
+updateCart();
+}
+
+/* تحديث السلة */
+function updateCart(){
+
+let html="";
+let total=0;
+
+cart.forEach((p,i)=>{
+
+let sub=p.price*p.qty;
+total+=sub;
+
+html+=`
+<div class="item">
+<b>${p.name}</b><br>
+${p.price} × ${p.qty} = ${sub} دج
+
+<div class="qty">
+<button onclick="change(${i},-1)">-</button>
+<button onclick="change(${i},1)">+</button>
+</div>
+
+</div>
+`;
+});
+
+document.getElementById("cartItems").innerHTML=html;
+document.getElementById("total").innerText=total;
+document.getElementById("final").innerText=total+200;
+
+}
+
+/* تغيير الكمية */
+function change(i,v){
+
+cart[i].qty+=v;
+
+if(cart[i].qty<=0){
+cart.splice(i,1);
+}
+
+updateCart();
+
+}
+
+/* إظهار وإخفاء النموذج */
+function toggleForm(){
+
+let f=document.getElementById("form");
+
+if(f.style.display==="block"){
+f.style.display="none";
+}else{
+f.style.display="block";
+}
+
+}
+
+/* إرسال الطلب */
+async function sendOrder(){
+
+let data={
+firstName:firstName.value,
+lastName:lastName.value,
+phone:phone.value,
+address:address.value,
+products:cart,
+total:document.getElementById("final").innerText
+};
+
+await fetch("YOUR_GOOGLE_SCRIPT_URL",{
+method:"POST",
+body:JSON.stringify(data)
+});
+
+alert("تم إرسال الطلب بنجاح ✔");
+
+}
+
+renderProducts();
+updateCart();
+
+</script>
+
+</body>
+</html>
