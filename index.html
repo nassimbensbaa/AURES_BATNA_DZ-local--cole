@@ -9,10 +9,11 @@
 body{font-family:Cairo;background:#f4f6f8;margin:0;display:flex}
 .cart{width:260px;background:#fff;height:100vh;position:fixed;left:0;padding:10px;overflow:auto}
 .main{margin-left:260px;padding:10px;width:100%}
-.item{border-bottom:1px solid #eee;padding:6px}
+.item{border-bottom:1px solid #eee;padding:6px;font-size:13px}
 button{cursor:pointer}
-.btn{background:#f59e0b;color:#fff;padding:6px;border:none;width:100%}
+.btn{background:#f59e0b;color:#fff;padding:6px;border:none;width:100%;border-radius:6px}
 .card{background:#fff;padding:10px;margin:5px;border-radius:8px}
+input{width:100%;padding:6px;margin:3px 0}
 </style>
 </head>
 
@@ -32,10 +33,10 @@ button{cursor:pointer}
 
 <hr>
 
-<input id="firstName" placeholder="الاسم"><br><br>
-<input id="lastName" placeholder="اللقب"><br><br>
-<input id="phone" placeholder="الهاتف"><br><br>
-<input id="address" placeholder="العنوان"><br><br>
+<input id="firstName" placeholder="الاسم">
+<input id="lastName" placeholder="اللقب">
+<input id="phone" placeholder="الهاتف">
+<input id="address" placeholder="العنوان">
 
 <button class="btn" onclick="sendOrder()">إرسال الطلب</button>
 
@@ -48,12 +49,11 @@ button{cursor:pointer}
 
 <script>
 
-/* 🔥 رابط Google Script مباشرة */
 const GOOGLE_URL = "https://script.google.com/macros/s/AKfycbytv6JbE8cvmbuTi9sjIFkAQmRH8sDHOhFNCZkXkdfm9thQSAcCrzU5JmNxUnzbTJZZ5w/exec";
 
 const PRODUCTS = [
-  {name:"كراس", price:120},
-  {name:"قلم", price:30},
+  {name:"كراس 96 صفحة", price:120},
+  {name:"قلم أزرق", price:30},
   {name:"ممحاة", price:50}
 ];
 
@@ -91,59 +91,54 @@ function updateCart(){
   let total=0;
 
   cart.forEach((p,i)=>{
-    let sub=p.price*p.qty;
-    total+=sub;
+    let sub = p.price * p.qty;
+    total += sub;
 
-    html+=`
+    html += `
       <div class="item">
-        ${p.name} x${p.qty} = ${sub}
+        ${p.name} × ${p.qty} = ${sub} دج
         <button onclick="change(${i},-1)">-</button>
         <button onclick="change(${i},1)">+</button>
       </div>
     `;
   });
 
-  document.getElementById("cartItems").innerHTML=html;
-  document.getElementById("total").innerText=total;
-  document.getElementById("final").innerText=total+200;
+  document.getElementById("cartItems").innerHTML = html;
+  document.getElementById("total").innerText = total;
+  document.getElementById("final").innerText = total + 200;
 }
 
 /* تغيير الكمية */
 function change(i,v){
-  cart[i].qty+=v;
-  if(cart[i].qty<=0) cart.splice(i,1);
+  cart[i].qty += v;
+  if(cart[i].qty <= 0) cart.splice(i,1);
   updateCart();
 }
 
-/* 🚀 إرسال مباشر إلى Google Sheets */
+/* 🚀 الإرسال النهائي (FIXED 100%) */
 async function sendOrder(){
 
-  if(cart.length===0){
+  if(cart.length === 0){
     alert("السلة فارغة");
     return;
   }
 
-  const total = Number(document.getElementById("final").innerText);
+  const form = new FormData();
 
-  const payload = {
-    firstName: firstName.value,
-    lastName: lastName.value,
-    phone: phone.value,
-    address: address.value,
-    shipping: 200,
-    total: total,
-    products: cart
-  };
+  form.append("firstName", document.getElementById("firstName").value);
+  form.append("lastName", document.getElementById("lastName").value);
+  form.append("phone", document.getElementById("phone").value);
+  form.append("address", document.getElementById("address").value);
+  form.append("shipping", "200");
+  form.append("total", document.getElementById("final").innerText);
+  form.append("products", JSON.stringify(cart));
 
-  console.log("SENDING:", payload);
+  console.log("SENDING...");
 
   try {
     const res = await fetch(GOOGLE_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
+      body: form
     });
 
     const text = await res.text();
