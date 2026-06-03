@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>متجر السلة</title>
+<title>متجر السلة الآمن</title>
 
 <style>
-body{font-family:Cairo;background:#f4f6f8;margin:0;display:flex}
-.cart{width:260px;background:#fff;height:100vh;position:fixed;left:0;padding:10px;overflow:auto}
+body{margin:0;font-family:Cairo;background:#f4f6f8;display:flex}
+.cart{width:260px;background:#fff;height:100vh;position:fixed;left:0;padding:10px;overflow:auto;border-right:1px solid #eee}
 .main{margin-left:260px;padding:10px;width:100%}
-.item{border-bottom:1px solid #eee;padding:6px;font-size:13px}
-button{cursor:pointer}
-.btn{background:#f59e0b;color:#fff;padding:6px;border:none;width:100%;border-radius:6px}
+.item{padding:6px;border-bottom:1px solid #eee;font-size:13px}
 .card{background:#fff;padding:10px;margin:5px;border-radius:8px}
-input{width:100%;padding:6px;margin:3px 0}
+button{cursor:pointer}
+.btn{width:100%;padding:8px;background:#f59e0b;color:#fff;border:none;border-radius:6px}
+input{width:100%;padding:6px;margin:4px 0}
 </style>
 </head>
 
@@ -49,11 +49,10 @@ input{width:100%;padding:6px;margin:3px 0}
 
 <script>
 
-const GOOGLE_URL = "https://script.google.com/macros/s/AKfycbytv6JbE8cvmbuTi9sjIFkAQmRH8sDHOhFNCZkXkdfm9thQSAcCrzU5JmNxUnzbTJZZ5w/exec";
-
+/* المنتجات */
 const PRODUCTS = [
-  {name:"كراس 96 صفحة", price:120},
-  {name:"قلم أزرق", price:30},
+  {name:"كراس", price:120},
+  {name:"قلم", price:30},
   {name:"ممحاة", price:50}
 ];
 
@@ -96,7 +95,7 @@ function updateCart(){
 
     html += `
       <div class="item">
-        ${p.name} × ${p.qty} = ${sub} دج
+        ${p.name} × ${p.qty} = ${sub}
         <button onclick="change(${i},-1)">-</button>
         <button onclick="change(${i},1)">+</button>
       </div>
@@ -115,7 +114,7 @@ function change(i,v){
   updateCart();
 }
 
-/* 🚀 الإرسال النهائي (FIXED 100%) */
+/* 🚀 الإرسال الآمن عبر Vercel API */
 async function sendOrder(){
 
   if(cart.length === 0){
@@ -123,37 +122,41 @@ async function sendOrder(){
     return;
   }
 
-  const form = new FormData();
-
-  form.append("firstName", document.getElementById("firstName").value);
-  form.append("lastName", document.getElementById("lastName").value);
-  form.append("phone", document.getElementById("phone").value);
-  form.append("address", document.getElementById("address").value);
-  form.append("shipping", "200");
-  form.append("total", document.getElementById("final").innerText);
-  form.append("products", JSON.stringify(cart));
-
-  console.log("SENDING...");
+  const payload = {
+    firstName: document.getElementById("firstName").value,
+    lastName: document.getElementById("lastName").value,
+    phone: document.getElementById("phone").value,
+    address: document.getElementById("address").value,
+    shipping: 200,
+    total: document.getElementById("final").innerText,
+    products: cart
+  };
 
   try {
-    const res = await fetch(GOOGLE_URL, {
+    const res = await fetch("/api/send", {
       method: "POST",
-      body: form
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     });
 
-    const text = await res.text();
-    console.log("RESPONSE:", text);
+    const data = await res.json();
 
-    alert("تم إرسال الطلب ✔");
-
-    cart = [];
-    updateCart();
+    if(data.ok){
+      alert("تم إرسال الطلب ✔");
+      cart = [];
+      updateCart();
+    } else {
+      alert("فشل الإرسال ❌");
+    }
 
   } catch(err){
-    alert("خطأ في الإرسال: " + err.message);
+    alert("خطأ في الاتصال: " + err.message);
   }
 }
 
+/* init */
 renderProducts();
 updateCart();
 
