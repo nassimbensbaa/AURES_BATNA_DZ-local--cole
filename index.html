@@ -182,15 +182,6 @@ border-top:2px solid #eee;
 
 </div>
 
-<!-- نافذة الكمية -->
-<div class="modal" id="qtyModal">
-<div class="modal-content">
-<h4>أدخل الكمية</h4>
-<input type="number" id="qtyInput" value="1">
-<button class="btn" onclick="confirmAdd()">إضافة</button>
-</div>
-</div>
-
 <!-- نافذة الطلب -->
 <div class="modal" id="orderModal">
 <div class="modal-content">
@@ -221,7 +212,6 @@ const PRODUCTS=[
 ];
 
 let cart=[];
-let selectedProduct=null;
 
 /* عرض المنتجات */
 function renderProducts(){
@@ -232,27 +222,18 @@ html+=`
 <img src="${p.image}">
 <h4>${p.name}</h4>
 <div class="price">${p.price} دج</div>
-<button class="btn" onclick="openQty(${i})">إضافة</button>
+<button class="btn" onclick="add(${i})">إضافة</button>
 </div>`;
 });
 document.getElementById("products").innerHTML=html;
 }
 
-/* نافذة الكمية */
-function openQty(i){
-selectedProduct=PRODUCTS[i];
-document.getElementById("qtyModal").style.display="flex";
-}
-
-/* تأكيد إضافة */
-function confirmAdd(){
-let qty=Number(document.getElementById("qtyInput").value);
-
-let f=cart.find(x=>x.name===selectedProduct.name);
-if(f) f.qty+=qty;
-else cart.push({...selectedProduct,qty});
-
-document.getElementById("qtyModal").style.display="none";
+/* إضافة */
+function add(i){
+let p=PRODUCTS[i];
+let f=cart.find(x=>x.name===p.name);
+if(f) f.qty++;
+else cart.push({...p,qty:1});
 updateCart();
 }
 
@@ -273,9 +254,7 @@ ${p.price} × ${p.qty} = ${sub}
 <div class="qty">
 <button onclick="change(${i},-1)">-</button>
 <button onclick="change(${i},1)">+</button>
-<button onclick="removeItem(${i})">❌</button>
 </div>
-
 </div>`;
 });
 
@@ -284,16 +263,10 @@ document.getElementById("total").innerText=total;
 document.getElementById("final").innerText=total+200;
 }
 
-/* تعديل */
+/* تغيير */
 function change(i,v){
 cart[i].qty+=v;
 if(cart[i].qty<=0) cart.splice(i,1);
-updateCart();
-}
-
-/* حذف */
-function removeItem(i){
-cart.splice(i,1);
 updateCart();
 }
 
@@ -307,7 +280,7 @@ document.getElementById("orderModal").style.display="flex";
 }
 
 /* إرسال */
-function sendOrder(){
+async function sendOrder(){
 
 if(!firstName.value || !lastName.value || !phone.value || !address.value){
 alert("املأ كل الخانات");
@@ -319,11 +292,35 @@ alert("رقم غير صحيح");
 return;
 }
 
-alert("تم تسجيل طلبك، سيتم الاتصال بك 📞");
+const payload = {
+firstName:firstName.value,
+lastName:lastName.value,
+phone:phone.value,
+address:address.value,
+shipping:200,
+total:document.getElementById("final").innerText,
+products:cart
+};
 
-document.getElementById("orderModal").style.display="none";
+try{
+const res=await fetch("/api/send",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(payload)
+});
+
+const data=await res.json();
+
+if(data.ok){
+alert("تم تسجيل الطلب ✔");
 cart=[];
 updateCart();
+document.getElementById("orderModal").style.display="none";
+}
+}catch(e){
+alert("خطأ في الإرسال");
+}
+
 }
 
 renderProducts();
