@@ -8,42 +8,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{
-  font-family:'Cairo',sans-serif;
-  box-sizing:border-box;
-}
+*{font-family:'Cairo',sans-serif;box-sizing:border-box;}
+body{margin:0;background:#f4f6f8;}
 
-body{
-  margin:0;
-  background:#f4f6f8;
-}
-
-/* ===== HEADER ===== */
 header{
   background:linear-gradient(135deg,#f59e0b,#f97316);
   color:white;
   text-align:center;
   padding:15px;
 }
+header h1{margin:0;font-size:22px;}
+header p{margin:5px 0 0;font-size:13px;}
 
-header h1{
-  margin:0;
-  font-size:22px;
-}
+.container{display:flex;gap:10px;padding:10px;}
 
-header p{
-  margin:5px 0 0;
-  font-size:13px;
-}
-
-/* ===== LAYOUT ===== */
-.container{
-  display:flex;
-  gap:10px;
-  padding:10px;
-}
-
-/* ===== PRODUCTS ===== */
 .products{
   flex:3;
   display:grid;
@@ -65,10 +43,7 @@ header p{
   border-radius:10px;
 }
 
-.price{
-  color:#f59e0b;
-  font-weight:bold;
-}
+.price{color:#f59e0b;font-weight:bold;}
 
 .btn{
   width:100%;
@@ -80,20 +55,14 @@ header p{
   cursor:pointer;
 }
 
-/* ===== CART (RIGHT) ===== */
 .cart{
   flex:1;
   background:white;
   border-radius:12px;
   padding:10px;
-  height:fit-content;
   position:sticky;
   top:10px;
   box-shadow:0 2px 10px rgba(0,0,0,.08);
-}
-
-.cart h3{
-  margin-top:0;
 }
 
 .item{
@@ -110,12 +79,6 @@ header p{
   cursor:pointer;
 }
 
-.total-box{
-  margin-top:10px;
-  font-size:14px;
-}
-
-/* ===== ORDER BUTTON ===== */
 .order-btn{
   width:100%;
   margin-top:10px;
@@ -124,18 +87,15 @@ header p{
   color:white;
   border:none;
   border-radius:10px;
-  cursor:pointer;
 }
 
-/* ===== MODAL ===== */
 .modal{
   display:none;
   position:fixed;
-  top:0;left:0;right:0;bottom:0;
+  inset:0;
   background:rgba(0,0,0,.5);
   justify-content:center;
   align-items:center;
-  z-index:9999;
 }
 
 .modal-content{
@@ -154,29 +114,16 @@ header p{
   border-radius:8px;
 }
 
-.modal-content button{
-  width:100%;
-  margin-top:8px;
-}
-
-/* ===== FOOTER ===== */
 footer{
   text-align:center;
   padding:15px;
-  margin-top:20px;
   background:#fff;
   border-top:1px solid #eee;
   font-size:14px;
 }
 
-/* MOBILE */
 @media(max-width:900px){
-.container{
-  flex-direction:column;
-}
-.cart{
-  position:relative;
-}
+.container{flex-direction:column;}
 }
 </style>
 </head>
@@ -190,72 +137,62 @@ footer{
 
 <div class="container">
 
-  <!-- المنتجات -->
   <div class="products" id="products"></div>
 
-  <!-- السلة -->
   <div class="cart">
     <h3>🛒 السلة</h3>
     <div id="cartItems"></div>
 
-    <div class="total-box">
+    <p>
       المجموع: <b id="total">0</b> دج<br>
       التوصيل: 200 دج<br>
       الإجمالي: <b id="final">0</b> دج
-    </div>
+    </p>
 
-    <button class="order-btn" onclick="openOrder()">
-      تأكيد الطلب
-    </button>
+    <button class="order-btn" onclick="openOrder()">تأكيد الطلب</button>
   </div>
 
 </div>
 
-<!-- MODAL ORDER -->
+<!-- الطلب -->
 <div class="modal" id="orderModal">
   <div class="modal-content">
-
-    <h3>📦 معلومات الزبون</h3>
-
+    <h3>بيانات الزبون</h3>
     <input id="firstName" placeholder="الاسم">
     <input id="lastName" placeholder="اللقب">
     <input id="phone" placeholder="رقم الهاتف">
     <input id="address" placeholder="العنوان">
-
-    <button class="btn" onclick="sendOrder()">إرسال الطلب</button>
-    <button class="btn" style="background:#999" onclick="closeOrder()">إغلاق</button>
-
+    <button class="btn" onclick="sendOrder()">إرسال</button>
   </div>
 </div>
 
-<!-- SUCCESS -->
+<!-- نجاح -->
 <div class="modal" id="successModal">
   <div class="modal-content">
     <h3>✅ تم تسجيل الطلب</h3>
-    <p>سوف يتم الاتصال بك من مصلحة الزبائن قريباً</p>
+    <p>سوف يتم الاتصال بك من مصلحة الزبائن</p>
     <button class="btn" onclick="closeSuccess()">حسناً</button>
   </div>
 </div>
 
 <footer>
 📞 مصلحة الزبائن: 0659418701 <br>
-🚚 توصيل في نفس اليوم داخل الولاية
+🚚 توصيل في نفس اليوم
 </footer>
 
 <script>
 
-/* المنتجات */
+/* ✅ الصور من مجلد images */
 const PRODUCTS = [
-  {name:"كراس 96 صفحة",price:120,image:"https://via.placeholder.com/150"},
-  {name:"قلم أزرق",price:30,image:"https://via.placeholder.com/150"},
-  {name:"مسطرة",price:40,image:"https://via.placeholder.com/150"},
-  {name:"ممحاة",price:50,image:"https://via.placeholder.com/150"}
+  {name:"كراس 96 صفحة",price:120,image:"images/nassim01.jpg"},
+  {name:"قلم أزرق",price:30,image:"images/nassim02.jpg"},
+  {name:"مسطرة",price:40,image:"images/nassim02.jpg"},
+  {name:"ممحاة",price:50,image:"images/nassim03.jpg"}
 ];
 
 const SHIPPING = 200;
 let cart = [];
 
-/* عرض المنتجات */
 function renderProducts(){
 let html="";
 PRODUCTS.forEach((p,i)=>{
@@ -264,29 +201,22 @@ html+=`
 <img src="${p.image}">
 <h4>${p.name}</h4>
 <div class="price">${p.price} دج</div>
-<button class="btn" onclick="askQty(${i})">إضافة</button>
+<button class="btn" onclick="add(${i})">إضافة</button>
 </div>`;
 });
 document.getElementById("products").innerHTML=html;
 }
 
-/* طلب الكمية */
-function askQty(i){
-let q = prompt("أدخل الكمية:");
-q = parseInt(q);
+function add(i){
+let p=PRODUCTS[i];
+let f=cart.find(x=>x.name===p.name);
 
-if(!q || q<=0) return;
-
-let p = PRODUCTS[i];
-let found = cart.find(x=>x.name===p.name);
-
-if(found) found.qty += q;
-else cart.push({...p,qty:q});
+if(f) f.qty++;
+else cart.push({...p,qty:1});
 
 updateCart();
 }
 
-/* السلة */
 function updateCart(){
 let html="";
 let total=0;
@@ -298,12 +228,11 @@ total+=sub;
 html+=`
 <div class="item">
 <b>${p.name}</b><br>
-${p.price} × ${p.qty} = ${sub} دج
+${p.price} × ${p.qty} = ${sub}
 
 <div class="qty">
 <button onclick="change(${i},-1)">-</button>
 <button onclick="change(${i},1)">+</button>
-<button onclick="removeItem(${i})">حذف</button>
 </div>
 </div>`;
 });
@@ -319,52 +248,24 @@ if(cart[i].qty<=0) cart.splice(i,1);
 updateCart();
 }
 
-function removeItem(i){
-cart.splice(i,1);
-updateCart();
-}
-
-/* الطلب */
 function openOrder(){
-if(cart.length===0){
-alert("السلة فارغة");
-return;
-}
+if(cart.length===0){alert("السلة فارغة");return;}
 document.getElementById("orderModal").style.display="flex";
 }
 
-function closeOrder(){
-document.getElementById("orderModal").style.display="none";
-}
-
-/* تحقق الهاتف */
-function validPhone(phone){
-return /^(05|06|07)[0-9]{8}$/.test(phone);
-}
-
-/* إرسال */
 function sendOrder(){
+let ph = phone.value;
 
-let fn = firstName.value.trim();
-let ln = lastName.value.trim();
-let ph = phone.value.trim();
-let ad = address.value.trim();
-
-if(!fn || !ln || !ph || !ad){
-alert("املأ كل الخانات");
+if(!/^0(5|6|7)[0-9]{8}$/.test(ph)){
+alert("رقم غير صحيح");
 return;
 }
 
-if(!validPhone(ph)){
-alert("رقم الهاتف غير صحيح");
-return;
-}
-
-closeOrder();
-document.getElementById("successModal").style.display="flex";
-
-cart = [];
+cart=[];
 updateCart();
+
+document.getElementById("orderModal").style.display="none";
+document.getElementById("successModal").style.display="flex";
 }
 
 function closeSuccess(){
