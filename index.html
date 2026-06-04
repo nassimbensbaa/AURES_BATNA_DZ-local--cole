@@ -17,7 +17,7 @@ margin:0;
 background:#f4f6f8;
 }
 
-/* ===== header ===== */
+/* ===== HEADER ===== */
 header{
 text-align:center;
 padding:10px;
@@ -27,14 +27,14 @@ border-bottom:2px solid #eee;
 
 header h1{margin:0;color:#f59e0b;}
 
-/* ===== layout ===== */
+/* ===== LAYOUT ===== */
 .container{
 display:flex;
 gap:10px;
 padding:10px;
 }
 
-/* ===== products ===== */
+/* ===== PRODUCTS ===== */
 .products{
 flex:3;
 display:grid;
@@ -70,7 +70,7 @@ cursor:pointer;
 margin-top:5px;
 }
 
-/* ===== cart ===== */
+/* ===== CART ===== */
 .cart{
 flex:1;
 background:white;
@@ -85,18 +85,26 @@ box-shadow:0 0 10px rgba(0,0,0,.1);
 
 .item{
 border-bottom:1px solid #eee;
-padding:5px 0;
+padding:8px 0;
 font-size:13px;
 }
 
+.qty{
+display:flex;
+align-items:center;
+gap:5px;
+margin-top:5px;
+}
+
 .qty button{
-padding:2px 6px;
+padding:3px 8px;
 border:none;
 background:#ddd;
 border-radius:5px;
 cursor:pointer;
 }
 
+/* ===== CHECKOUT ===== */
 .checkout-btn{
 width:100%;
 margin-top:10px;
@@ -108,7 +116,7 @@ border-radius:10px;
 cursor:pointer;
 }
 
-/* ===== modal ===== */
+/* ===== MODAL ===== */
 .modal{
 display:none;
 position:fixed;
@@ -126,9 +134,20 @@ border-radius:10px;
 width:90%;
 max-width:420px;
 text-align:center;
+position:relative;
 }
 
-/* ===== form (عمودي) ===== */
+/* ✖ زر الإغلاق */
+.close{
+position:absolute;
+top:8px;
+left:10px;
+font-size:18px;
+cursor:pointer;
+color:#666;
+}
+
+/* ===== FORM ===== */
 .form{
 display:flex;
 flex-direction:column;
@@ -143,7 +162,7 @@ border:1px solid #ddd;
 border-radius:8px;
 }
 
-/* ===== receipt ===== */
+/* ===== RECEIPT ===== */
 #receipt{
 background:#fff;
 padding:10px;
@@ -153,10 +172,9 @@ text-align:right;
 
 .receipt-header{
 text-align:center;
-font-size:18px;
 font-weight:bold;
 color:#f59e0b;
-margin-bottom:10px;
+font-size:18px;
 }
 
 .receipt-footer{
@@ -166,7 +184,7 @@ font-size:13px;
 color:#333;
 }
 
-/* ===== services ===== */
+/* ===== SERVICES ===== */
 .services{
 padding:15px;
 text-align:center;
@@ -191,7 +209,7 @@ width:160px;
 font-size:13px;
 }
 
-/* ===== footer ===== */
+/* ===== FOOTER ===== */
 footer{
 text-align:center;
 padding:15px;
@@ -199,6 +217,7 @@ background:white;
 border-top:2px solid #eee;
 margin-top:10px;
 }
+
 </style>
 </head>
 
@@ -210,8 +229,10 @@ margin-top:10px;
 
 <div class="container">
 
+<!-- PRODUCTS -->
 <div class="products" id="products"></div>
 
+<!-- CART -->
 <div class="cart">
 <h3>🛒 السلة</h3>
 
@@ -230,9 +251,11 @@ margin-top:10px;
 
 </div>
 
-<!-- ORDER -->
+<!-- ORDER MODAL -->
 <div class="modal" id="orderModal">
 <div class="modal-content">
+
+<span class="close" onclick="closeOrder()">✖</span>
 
 <h3>تأكيد الطلب</h3>
 
@@ -252,13 +275,11 @@ margin-top:10px;
 <div class="modal" id="successModal">
 <div class="modal-content">
 
-<h2 style="color:#f59e0b">✔ تم تأكيد طلبكم</h2>
+<h2 style="color:#f59e0b">✔ تم تأكيد الطلب</h2>
 
-<p>سيتم الاتصال بكم من طرف مصلحة الزبائن.</p>
+<p>سيتم الاتصال بك لتأكيد الطلبية.</p>
 
-<!-- 📦 IMAGE RECEIPT -->
 <div id="receipt">
-
 <div class="receipt-header">📚 مكتبة الجود</div>
 
 <div id="receiptItems"></div>
@@ -269,9 +290,9 @@ margin-top:10px;
 
 <div class="receipt-footer">
 شكراً لثقتكم ❤️<br>
-📞 0659418701
+📞 0659418701<br>
+🚚 التوصيل في نفس اليوم - ولاية باتنة
 </div>
-
 </div>
 
 <br>
@@ -283,20 +304,22 @@ margin-top:10px;
 
 <!-- SERVICES -->
 <div class="services">
+
 <h3 style="color:#f59e0b">✨ خدماتنا</h3>
 
 <div class="service-boxes">
 
-<div class="service">🚚 توصيل سريع</div>
+<div class="service">🚚 توصيل في نفس اليوم<br>ولاية باتنة</div>
 <div class="service">💰 الدفع عند الاستلام</div>
 <div class="service">📞 دعم سريع</div>
 <div class="service">📦 منتجات مضمونة</div>
 
 </div>
+
 </div>
 
 <footer>
-📞 0659418701
+📞 0659418701 - مصلحة الزبائن
 </footer>
 
 <script>
@@ -309,7 +332,7 @@ const PRODUCTS=[
 
 let cart=[];
 
-/* products */
+/* PRODUCTS */
 function renderProducts(){
 let html="";
 PRODUCTS.forEach((p,i)=>{
@@ -329,7 +352,7 @@ ${p.oldPrice?`<span class="old-price">${p.oldPrice} دج</span>`:""}
 document.getElementById("products").innerHTML=html;
 }
 
-/* add */
+/* ADD */
 function add(i){
 let p=PRODUCTS[i];
 let f=cart.find(x=>x.name===p.name);
@@ -338,7 +361,7 @@ else cart.push({...p,qty:1});
 updateCart();
 }
 
-/* cart */
+/* CART */
 function updateCart(){
 let html="";
 let total=0;
@@ -351,6 +374,14 @@ html+=`
 <div class="item">
 <b>${p.name}</b><br>
 ${p.price} × ${p.qty} = ${sub}
+
+<div class="qty">
+<button onclick="change(${i},-1)">-</button>
+<span>${p.qty}</span>
+<button onclick="change(${i},1)">+</button>
+<button onclick="removeItem(${i})">❌</button>
+</div>
+
 </div>`;
 });
 
@@ -359,7 +390,20 @@ document.getElementById("total").innerText=total;
 document.getElementById("final").innerText=total+200;
 }
 
-/* open */
+/* CHANGE */
+function change(i,v){
+cart[i].qty+=v;
+if(cart[i].qty<=0) cart.splice(i,1);
+updateCart();
+}
+
+/* REMOVE */
+function removeItem(i){
+cart.splice(i,1);
+updateCart();
+}
+
+/* OPEN ORDER */
 function openOrder(){
 if(cart.length===0){
 alert("السلة فارغة");
@@ -368,7 +412,12 @@ return;
 document.getElementById("orderModal").style.display="flex";
 }
 
-/* send */
+/* CLOSE ORDER */
+function closeOrder(){
+document.getElementById("orderModal").style.display="none";
+}
+
+/* SEND */
 async function sendOrder(){
 
 if(!firstName.value||!lastName.value||!phone.value||!address.value){
@@ -376,7 +425,7 @@ alert("املأ كل الخانات");
 return;
 }
 
-/* fill receipt */
+/* receipt */
 let html="";
 let total=0;
 
@@ -394,10 +443,7 @@ ${p.price} × ${p.qty} = ${sub} دج
 document.getElementById("receiptItems").innerHTML=html;
 document.getElementById("receiptTotal").innerText=total+200;
 
-/* close form */
-document.getElementById("orderModal").style.display="none";
-
-/* send API */
+/* API */
 await fetch("/api/send",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
@@ -415,23 +461,18 @@ products:cart
 cart=[];
 updateCart();
 
-/* show success */
+document.getElementById("orderModal").style.display="none";
 document.getElementById("successModal").style.display="flex";
 }
 
-/* download + close modal */
+/* DOWNLOAD IMAGE */
 function downloadReceipt(){
 
-const receipt=document.getElementById("receipt");
-
-html2canvas(receipt).then(canvas=>{
-let link=document.createElement("a");
-link.download="commande.png";
-link.href=canvas.toDataURL();
-link.click();
-
-/* 🔥 بعد التحميل تغلق النافذة */
-document.getElementById("successModal").style.display="none";
+html2canvas(document.getElementById("receipt")).then(canvas=>{
+let a=document.createElement("a");
+a.download="commande.png";
+a.href=canvas.toDataURL();
+a.click();
 });
 }
 
