@@ -7,7 +7,6 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap" rel="stylesheet">
 
-<!-- 🔥 مكتبة تحويل الصورة -->
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
@@ -18,7 +17,7 @@ margin:0;
 background:#f4f6f8;
 }
 
-/* ===== الهيدر ===== */
+/* ===== header ===== */
 header{
 text-align:center;
 padding:10px;
@@ -27,7 +26,6 @@ border-bottom:2px solid #eee;
 }
 
 header h1{margin:0;color:#f59e0b;}
-header p{margin:0;color:#666;font-size:14px;}
 
 /* ===== layout ===== */
 .container{
@@ -36,7 +34,7 @@ gap:10px;
 padding:10px;
 }
 
-/* ===== المنتجات ===== */
+/* ===== products ===== */
 .products{
 flex:3;
 display:grid;
@@ -72,7 +70,7 @@ cursor:pointer;
 margin-top:5px;
 }
 
-/* ===== السلة ===== */
+/* ===== cart ===== */
 .cart{
 flex:1;
 background:white;
@@ -80,9 +78,9 @@ padding:10px;
 border-radius:10px;
 height:85vh;
 overflow:auto;
-box-shadow:0 0 10px rgba(0,0,0,.1);
 position:sticky;
 top:10px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
 }
 
 .item{
@@ -110,7 +108,7 @@ border-radius:10px;
 cursor:pointer;
 }
 
-/* ===== modals ===== */
+/* ===== modal ===== */
 .modal{
 display:none;
 position:fixed;
@@ -130,7 +128,45 @@ max-width:420px;
 text-align:center;
 }
 
-/* ===== خدمات ===== */
+/* ===== form (عمودي) ===== */
+.form{
+display:flex;
+flex-direction:column;
+gap:8px;
+margin-top:10px;
+}
+
+.form input{
+width:100%;
+padding:8px;
+border:1px solid #ddd;
+border-radius:8px;
+}
+
+/* ===== receipt ===== */
+#receipt{
+background:#fff;
+padding:10px;
+border-radius:10px;
+text-align:right;
+}
+
+.receipt-header{
+text-align:center;
+font-size:18px;
+font-weight:bold;
+color:#f59e0b;
+margin-bottom:10px;
+}
+
+.receipt-footer{
+text-align:center;
+margin-top:10px;
+font-size:13px;
+color:#333;
+}
+
+/* ===== services ===== */
 .services{
 padding:15px;
 text-align:center;
@@ -163,7 +199,6 @@ background:white;
 border-top:2px solid #eee;
 margin-top:10px;
 }
-
 </style>
 </head>
 
@@ -171,7 +206,6 @@ margin-top:10px;
 
 <header>
 <h1>📚 مكتبة الجود</h1>
-<p>أول مكتبة إلكترونية في الجزائر - ولاية باتنة</p>
 </header>
 
 <div class="container">
@@ -196,36 +230,36 @@ margin-top:10px;
 
 </div>
 
-<!-- ===== الطلب ===== -->
+<!-- ORDER -->
 <div class="modal" id="orderModal">
 <div class="modal-content">
 
 <h3>تأكيد الطلب</h3>
 
+<div class="form">
 <input id="firstName" placeholder="الاسم">
 <input id="lastName" placeholder="اللقب">
 <input id="phone" placeholder="رقم الهاتف">
 <input id="address" placeholder="العنوان">
+</div>
 
 <button class="btn" onclick="sendOrder()">تأكيد</button>
 
 </div>
 </div>
 
-<!-- ===== النجاح + الصورة ===== -->
+<!-- SUCCESS + IMAGE -->
 <div class="modal" id="successModal">
 <div class="modal-content">
 
 <h2 style="color:#f59e0b">✔ تم تأكيد طلبكم</h2>
 
-<p>
-سيتم الاتصال بكم من طرف أحد أعوان مصلحة الزبائن.
-<br>
-يرجى تحميل قائمة الطلب.
-</p>
+<p>سيتم الاتصال بكم من طرف مصلحة الزبائن.</p>
 
-<!-- 📦 الفاتورة -->
-<div id="receipt" style="background:#f8f8f8;padding:10px;border-radius:10px;text-align:right">
+<!-- 📦 IMAGE RECEIPT -->
+<div id="receipt">
+
+<div class="receipt-header">📚 مكتبة الجود</div>
 
 <div id="receiptItems"></div>
 
@@ -233,34 +267,36 @@ margin-top:10px;
 
 <h3>الإجمالي: <span id="receiptTotal"></span> دج</h3>
 
+<div class="receipt-footer">
+شكراً لثقتكم ❤️<br>
+📞 0659418701
 </div>
 
-<button class="btn" onclick="downloadReceipt()" style="margin-top:10px">
-📸 تحميل قائمة الطلب
-</button>
+</div>
+
+<br>
+
+<button class="btn" onclick="downloadReceipt()">📸 تحميل قائمة الطلب</button>
 
 </div>
 </div>
 
-<!-- ===== خدمات ===== -->
+<!-- SERVICES -->
 <div class="services">
-
 <h3 style="color:#f59e0b">✨ خدماتنا</h3>
 
 <div class="service-boxes">
 
-<div class="service">🚚 توصيل سريع<br>داخل الولاية</div>
+<div class="service">🚚 توصيل سريع</div>
 <div class="service">💰 الدفع عند الاستلام</div>
 <div class="service">📞 دعم سريع</div>
 <div class="service">📦 منتجات مضمونة</div>
 
 </div>
-
 </div>
 
 <footer>
-📞 0659418701<br>
-🚚 التوصيل في نفس اليوم داخل الولاية
+📞 0659418701
 </footer>
 
 <script>
@@ -273,7 +309,7 @@ const PRODUCTS=[
 
 let cart=[];
 
-/* عرض المنتجات */
+/* products */
 function renderProducts(){
 let html="";
 PRODUCTS.forEach((p,i)=>{
@@ -281,17 +317,19 @@ html+=`
 <div class="card">
 <img src="${p.image}">
 <h4>${p.name}</h4>
+
 <div>
 <span class="price">${p.price} دج</span>
-${p.oldPrice ? `<span class="old-price">${p.oldPrice} دج</span>` : ""}
+${p.oldPrice?`<span class="old-price">${p.oldPrice} دج</span>`:""}
 </div>
+
 <button class="btn" onclick="add(${i})">إضافة</button>
 </div>`;
 });
 document.getElementById("products").innerHTML=html;
 }
 
-/* إضافة */
+/* add */
 function add(i){
 let p=PRODUCTS[i];
 let f=cart.find(x=>x.name===p.name);
@@ -300,7 +338,7 @@ else cart.push({...p,qty:1});
 updateCart();
 }
 
-/* تحديث */
+/* cart */
 function updateCart(){
 let html="";
 let total=0;
@@ -313,11 +351,6 @@ html+=`
 <div class="item">
 <b>${p.name}</b><br>
 ${p.price} × ${p.qty} = ${sub}
-
-<div class="qty">
-<button onclick="change(${i},-1)">-</button>
-<button onclick="change(${i},1)">+</button>
-</div>
 </div>`;
 });
 
@@ -326,14 +359,7 @@ document.getElementById("total").innerText=total;
 document.getElementById("final").innerText=total+200;
 }
 
-/* تغيير */
-function change(i,v){
-cart[i].qty+=v;
-if(cart[i].qty<=0) cart.splice(i,1);
-updateCart();
-}
-
-/* فتح الطلب */
+/* open */
 function openOrder(){
 if(cart.length===0){
 alert("السلة فارغة");
@@ -342,15 +368,15 @@ return;
 document.getElementById("orderModal").style.display="flex";
 }
 
-/* إرسال الطلب */
+/* send */
 async function sendOrder(){
 
-if(!firstName.value || !lastName.value || !phone.value || !address.value){
+if(!firstName.value||!lastName.value||!phone.value||!address.value){
 alert("املأ كل الخانات");
 return;
 }
 
-/* تجهيز الفاتورة */
+/* fill receipt */
 let html="";
 let total=0;
 
@@ -368,8 +394,14 @@ ${p.price} × ${p.qty} = ${sub} دج
 document.getElementById("receiptItems").innerHTML=html;
 document.getElementById("receiptTotal").innerText=total+200;
 
-/* إرسال */
-const payload={
+/* close form */
+document.getElementById("orderModal").style.display="none";
+
+/* send API */
+await fetch("/api/send",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
 firstName:firstName.value,
 lastName:lastName.value,
 phone:phone.value,
@@ -377,23 +409,19 @@ address:address.value,
 shipping:200,
 total:total+200,
 products:cart
-};
-
-await fetch("/api/send",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify(payload)
+})
 });
 
 cart=[];
 updateCart();
 
-document.getElementById("orderModal").style.display="none";
+/* show success */
 document.getElementById("successModal").style.display="flex";
 }
 
-/* تحميل صورة */
+/* download + close modal */
 function downloadReceipt(){
+
 const receipt=document.getElementById("receipt");
 
 html2canvas(receipt).then(canvas=>{
@@ -401,6 +429,9 @@ let link=document.createElement("a");
 link.download="commande.png";
 link.href=canvas.toDataURL();
 link.click();
+
+/* 🔥 بعد التحميل تغلق النافذة */
+document.getElementById("successModal").style.display="none";
 });
 }
 
