@@ -45,34 +45,53 @@ padding:10px;
 .products{
 flex:3;
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
 gap:10px;
 }
 
+/* 🔥 كارد مطوّر */
 .card{
 background:white;
-padding:8px;
-border-radius:10px;
-box-shadow:0 2px 6px rgba(0,0,0,.1);
+padding:10px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+transition:0.2s;
 }
 
+.card:hover{
+transform:translateY(-2px);
+}
+
+/* 🔥 صورة أكبر */
 .card img{
 width:100%;
-height:80px;
+height:130px;
 object-fit:cover;
-border-radius:8px;
+border-radius:10px;
+margin-bottom:6px;
 }
 
-.price{color:#f59e0b;font-weight:bold;}
+.price{
+color:#f59e0b;
+font-weight:bold;
+}
+
+.old-price{
+text-decoration:line-through;
+color:#999;
+font-size:12px;
+margin-right:5px;
+}
 
 .btn{
 width:100%;
-padding:5px;
+padding:6px;
 background:#f59e0b;
 color:white;
 border:none;
 border-radius:8px;
 cursor:pointer;
+margin-top:5px;
 }
 
 /* ===== السلة ===== */
@@ -147,30 +166,6 @@ background:white;
 border-top:2px solid #eee;
 }
 
-.services{
-padding:15px;
-text-align:center;
-background:white;
-margin-top:10px;
-border-top:2px solid #eee;
-}
-
-.service-boxes{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:10px;
-margin-top:10px;
-}
-
-.service{
-background:#f4f6f8;
-padding:10px;
-border-radius:10px;
-width:150px;
-font-size:13px;
-}
-
 </style>
 </head>
 
@@ -239,22 +234,6 @@ font-size:13px;
 </div>
 </div>
 
-<!-- خدمات -->
-<div class="services">
-
-<h3 style="color:#f59e0b">✨ خدماتنا</h3>
-
-<div class="service-boxes">
-
-<div class="service">🚚 توصيل سريع<br>داخل الولاية</div>
-<div class="service">📞 دعم سريع<br>24/7</div>
-<div class="service">💰 الدفع عند الاستلام</div>
-<div class="service">📦 منتجات مضمونة</div>
-
-</div>
-
-</div>
-
 <footer>
 📞 مصلحة الزبائن: 0659418701<br>
 🚚 التوصيل في نفس اليوم داخل الولاية
@@ -262,10 +241,26 @@ font-size:13px;
 
 <script>
 
+/* 🔥 المنتجات مع تخفيض */
 const PRODUCTS=[
-{name:"كراس 96",price:120,image:"images/nassim01.jpg"},
-{name:"قلم أزرق",price:30,image:"images/nassim02.jpg"},
-{name:"ممحاة",price:50,image:"images/nassim03.jpg"}
+{
+name:"كراس 96",
+price:120,
+oldPrice:150,
+image:"images/nassim01.jpg"
+},
+{
+name:"قلم أزرق",
+price:30,
+oldPrice:50,
+image:"images/nassim02.jpg"
+},
+{
+name:"ممحاة",
+price:50,
+oldPrice:70,
+image:"images/nassim03.jpg"
+}
 ];
 
 let cart=[];
@@ -278,7 +273,12 @@ html+=`
 <div class="card">
 <img src="${p.image}">
 <h4>${p.name}</h4>
-<div class="price">${p.price} دج</div>
+
+<div>
+<span class="price">${p.price} دج</span>
+${p.oldPrice ? `<span class="old-price">${p.oldPrice} دج</span>` : ""}
+</div>
+
 <button class="btn" onclick="add(${i})">إضافة</button>
 </div>`;
 });
