@@ -7,6 +7,9 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap" rel="stylesheet">
 
+<!-- 🔥 مكتبة تحويل الصورة -->
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
 <style>
 *{font-family:'Cairo',sans-serif;box-sizing:border-box;}
 
@@ -23,16 +26,8 @@ background:white;
 border-bottom:2px solid #eee;
 }
 
-header h1{
-margin:0;
-color:#f59e0b;
-}
-
-header p{
-margin:0;
-color:#666;
-font-size:14px;
-}
+header h1{margin:0;color:#f59e0b;}
+header p{margin:0;color:#666;font-size:14px;}
 
 /* ===== layout ===== */
 .container{
@@ -49,39 +44,22 @@ grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
 gap:10px;
 }
 
-/* ===== كارد ===== */
 .card{
 background:white;
 padding:10px;
 border-radius:12px;
 box-shadow:0 2px 8px rgba(0,0,0,.1);
-transition:0.2s;
 }
 
-.card:hover{
-transform:translateY(-3px);
-}
-
-/* ===== صورة أكبر ===== */
 .card img{
 width:100%;
 height:130px;
 object-fit:cover;
 border-radius:10px;
-margin-bottom:6px;
 }
 
-.price{
-color:#f59e0b;
-font-weight:bold;
-}
-
-.old-price{
-text-decoration:line-through;
-color:#999;
-font-size:12px;
-margin-right:5px;
-}
+.price{color:#f59e0b;font-weight:bold;}
+.old-price{color:#999;text-decoration:line-through;font-size:12px;margin-right:5px;}
 
 .btn{
 width:100%;
@@ -147,17 +125,12 @@ align-items:center;
 background:white;
 padding:15px;
 border-radius:10px;
-width:300px;
+width:90%;
+max-width:420px;
 text-align:center;
 }
 
-.modal-content input{
-width:100%;
-margin:5px 0;
-padding:6px;
-}
-
-/* ===== الخدمات ===== */
+/* ===== خدمات ===== */
 .services{
 padding:15px;
 text-align:center;
@@ -180,7 +153,6 @@ padding:10px;
 border-radius:10px;
 width:160px;
 font-size:13px;
-box-shadow:0 2px 6px rgba(0,0,0,.05);
 }
 
 /* ===== footer ===== */
@@ -204,12 +176,9 @@ margin-top:10px;
 
 <div class="container">
 
-<!-- المنتجات -->
 <div class="products" id="products"></div>
 
-<!-- السلة -->
 <div class="cart">
-
 <h3>🛒 السلة</h3>
 
 <div id="cartItems"></div>
@@ -223,12 +192,11 @@ margin-top:10px;
 </div>
 
 <button class="checkout-btn" onclick="openOrder()">🧾 طلب</button>
-
 </div>
 
 </div>
 
-<!-- نافذة الطلب -->
+<!-- ===== الطلب ===== -->
 <div class="modal" id="orderModal">
 <div class="modal-content">
 
@@ -244,80 +212,63 @@ margin-top:10px;
 </div>
 </div>
 
-<!-- نافذة النجاح -->
+<!-- ===== النجاح + الصورة ===== -->
 <div class="modal" id="successModal">
 <div class="modal-content">
 
-<h2 style="color:#f59e0b">✔ تم تسجيل الطلب</h2>
+<h2 style="color:#f59e0b">✔ تم تأكيد طلبكم</h2>
 
 <p>
-سيتم الاتصال بك من طرف أحد أعوان مصلحة الزبائن لتأكيد الطلبية.<br>
-شكراً لك ❤️
+سيتم الاتصال بكم من طرف أحد أعوان مصلحة الزبائن.
+<br>
+يرجى تحميل قائمة الطلب.
 </p>
 
-<button class="btn" onclick="closeSuccess()">إغلاق</button>
+<!-- 📦 الفاتورة -->
+<div id="receipt" style="background:#f8f8f8;padding:10px;border-radius:10px;text-align:right">
+
+<div id="receiptItems"></div>
+
+<hr>
+
+<h3>الإجمالي: <span id="receiptTotal"></span> دج</h3>
+
+</div>
+
+<button class="btn" onclick="downloadReceipt()" style="margin-top:10px">
+📸 تحميل قائمة الطلب
+</button>
 
 </div>
 </div>
 
-<!-- ===== الخدمات ===== -->
+<!-- ===== خدمات ===== -->
 <div class="services">
 
 <h3 style="color:#f59e0b">✨ خدماتنا</h3>
 
 <div class="service-boxes">
 
-<div class="service">
-🚚 توصيل سريع<br>
-داخل الولاية في نفس اليوم
-</div>
-
-<div class="service">
-💰 الدفع عند الاستلام<br>
-بدون أي تحويل مسبق
-</div>
-
-<div class="service">
-📞 دعم سريع<br>
-رد فوري على الطلبات
-</div>
-
-<div class="service">
-📦 منتجات مضمونة<br>
-جودة عالية وأسعار مناسبة
-</div>
+<div class="service">🚚 توصيل سريع<br>داخل الولاية</div>
+<div class="service">💰 الدفع عند الاستلام</div>
+<div class="service">📞 دعم سريع</div>
+<div class="service">📦 منتجات مضمونة</div>
 
 </div>
 
 </div>
 
 <footer>
-📞 مصلحة الزبائن: 0659418701<br>
+📞 0659418701<br>
 🚚 التوصيل في نفس اليوم داخل الولاية
 </footer>
 
 <script>
 
-/* ===== المنتجات ===== */
 const PRODUCTS=[
-{
-name:"كراس 96",
-price:120,
-oldPrice:150,
-image:"images/nassim01.jpg"
-},
-{
-name:"قلم أزرق",
-price:30,
-oldPrice:50,
-image:"images/nassim02.jpg"
-},
-{
-name:"ممحاة",
-price:50,
-oldPrice:70,
-image:"images/nassim03.jpg"
-}
+{name:"كراس 96",price:120,oldPrice:150,image:"images/nassim01.jpg"},
+{name:"قلم أزرق",price:30,oldPrice:50,image:"images/nassim02.jpg"},
+{name:"ممحاة",price:50,oldPrice:70,image:"images/nassim03.jpg"}
 ];
 
 let cart=[];
@@ -330,12 +281,10 @@ html+=`
 <div class="card">
 <img src="${p.image}">
 <h4>${p.name}</h4>
-
 <div>
 <span class="price">${p.price} دج</span>
 ${p.oldPrice ? `<span class="old-price">${p.oldPrice} دج</span>` : ""}
 </div>
-
 <button class="btn" onclick="add(${i})">إضافة</button>
 </div>`;
 });
@@ -401,44 +350,58 @@ alert("املأ كل الخانات");
 return;
 }
 
-if(!/^0[567][0-9]{8}$/.test(phone.value)){
-alert("رقم غير صحيح");
-return;
-}
+/* تجهيز الفاتورة */
+let html="";
+let total=0;
 
+cart.forEach(p=>{
+let sub=p.price*p.qty;
+total+=sub;
+
+html+=`
+<div>
+<b>${p.name}</b><br>
+${p.price} × ${p.qty} = ${sub} دج
+</div><hr>`;
+});
+
+document.getElementById("receiptItems").innerHTML=html;
+document.getElementById("receiptTotal").innerText=total+200;
+
+/* إرسال */
 const payload={
 firstName:firstName.value,
 lastName:lastName.value,
 phone:phone.value,
 address:address.value,
 shipping:200,
-total:document.getElementById("final").innerText,
+total:total+200,
 products:cart
 };
 
-try{
-const res=await fetch("/api/send",{
+await fetch("/api/send",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify(payload)
 });
 
-const data=await res.json();
-
-if(data.ok){
 cart=[];
 updateCart();
+
 document.getElementById("orderModal").style.display="none";
 document.getElementById("successModal").style.display="flex";
 }
-}catch(e){
-alert("خطأ في الاتصال");
-}
 
-}
+/* تحميل صورة */
+function downloadReceipt(){
+const receipt=document.getElementById("receipt");
 
-function closeSuccess(){
-document.getElementById("successModal").style.display="none";
+html2canvas(receipt).then(canvas=>{
+let link=document.createElement("a");
+link.download="commande.png";
+link.href=canvas.toDataURL();
+link.click();
+});
 }
 
 renderProducts();
