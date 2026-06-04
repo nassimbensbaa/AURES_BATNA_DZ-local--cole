@@ -5,194 +5,225 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مكتبة الجود</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap" rel="stylesheet">
 
 <style>
 *{font-family:'Cairo',sans-serif;box-sizing:border-box;}
-body{margin:0;background:#f4f6f8;}
 
-header{
-  background:linear-gradient(135deg,#f59e0b,#f97316);
-  color:white;
-  text-align:center;
-  padding:15px;
+body{
+margin:0;
+background:#f4f6f8;
 }
-header h1{margin:0;font-size:22px;}
-header p{margin:5px 0 0;font-size:13px;}
 
-.container{display:flex;gap:10px;padding:10px;}
+/* ===== الهيدر ===== */
+header{
+text-align:center;
+padding:10px;
+background:white;
+border-bottom:2px solid #eee;
+}
 
+header h1{
+margin:0;
+color:#f59e0b;
+}
+
+header p{
+margin:0;
+color:#666;
+font-size:14px;
+}
+
+/* ===== layout ===== */
+.container{
+display:flex;
+gap:10px;
+padding:10px;
+}
+
+/* ===== المنتجات ===== */
 .products{
-  flex:3;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:10px;
+flex:3;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+gap:10px;
 }
 
 .card{
-  background:white;
-  border-radius:12px;
-  padding:8px;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
+background:white;
+padding:8px;
+border-radius:10px;
+box-shadow:0 2px 6px rgba(0,0,0,.1);
 }
 
 .card img{
-  width:100%;
-  height:90px;
-  object-fit:cover;
-  border-radius:10px;
+width:100%;
+height:80px;
+object-fit:cover;
+border-radius:8px;
 }
 
 .price{color:#f59e0b;font-weight:bold;}
 
 .btn{
-  width:100%;
-  padding:6px;
-  background:#f59e0b;
-  color:white;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
+width:100%;
+padding:5px;
+background:#f59e0b;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
 }
 
+/* ===== السلة يمين ===== */
 .cart{
-  flex:1;
-  background:white;
-  border-radius:12px;
-  padding:10px;
-  position:sticky;
-  top:10px;
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
+flex:1;
+background:white;
+padding:10px;
+border-radius:10px;
+height:85vh;
+overflow:auto;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+position:sticky;
+top:10px;
 }
 
 .item{
-  border-bottom:1px solid #eee;
-  padding:6px 0;
-  font-size:13px;
+border-bottom:1px solid #eee;
+padding:5px 0;
+font-size:13px;
 }
 
 .qty button{
-  padding:2px 6px;
-  border:none;
-  background:#ddd;
-  border-radius:5px;
-  cursor:pointer;
+padding:2px 6px;
+border:none;
+background:#ddd;
+border-radius:5px;
+cursor:pointer;
 }
 
-.order-btn{
-  width:100%;
-  margin-top:10px;
-  padding:8px;
-  background:linear-gradient(135deg,#f59e0b,#f97316);
-  color:white;
-  border:none;
-  border-radius:10px;
+/* ===== زر الطلب ===== */
+.checkout-btn{
+width:100%;
+margin-top:10px;
+padding:8px;
+background:linear-gradient(135deg,#f59e0b,#f97316);
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
 }
 
+/* ===== نافذة ===== */
 .modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.5);
-  justify-content:center;
-  align-items:center;
+display:none;
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,.5);
+justify-content:center;
+align-items:center;
 }
 
 .modal-content{
-  background:white;
-  padding:15px;
-  border-radius:12px;
-  width:90%;
-  max-width:350px;
+background:white;
+padding:15px;
+border-radius:10px;
+width:300px;
 }
 
 .modal-content input{
-  width:100%;
-  margin:5px 0;
-  padding:8px;
-  border:1px solid #ddd;
-  border-radius:8px;
+width:100%;
+margin:5px 0;
+padding:6px;
 }
 
+/* ===== footer ===== */
 footer{
-  text-align:center;
-  padding:15px;
-  background:#fff;
-  border-top:1px solid #eee;
-  font-size:14px;
+text-align:center;
+padding:15px;
+margin-top:20px;
+background:white;
+border-top:2px solid #eee;
 }
 
-@media(max-width:900px){
-.container{flex-direction:column;}
-}
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>📚 مكتبة الجود</h1>
-  <p>أول مكتبة إلكترونية في الجزائر – ولاية باتنة</p>
+<h1>📚 مكتبة الجود</h1>
+<p>أول مكتبة إلكترونية في الجزائر - ولاية باتنة</p>
 </header>
 
 <div class="container">
 
-  <div class="products" id="products"></div>
+<!-- المنتجات -->
+<div class="products" id="products"></div>
 
-  <div class="cart">
-    <h3>🛒 السلة</h3>
-    <div id="cartItems"></div>
+<!-- السلة -->
+<div class="cart">
+<h3>🛒 السلة</h3>
 
-    <p>
-      المجموع: <b id="total">0</b> دج<br>
-      التوصيل: 200 دج<br>
-      الإجمالي: <b id="final">0</b> دج
-    </p>
+<div id="cartItems"></div>
 
-    <button class="order-btn" onclick="openOrder()">تأكيد الطلب</button>
-  </div>
+<hr>
+
+<div>
+المجموع: <b id="total">0</b> دج<br>
+التوصيل: 200 دج<br>
+الإجمالي: <b id="final">0</b> دج
+</div>
+
+<button class="checkout-btn" onclick="openOrder()">🧾 طلب</button>
 
 </div>
 
-<!-- الطلب -->
+</div>
+
+<!-- نافذة الكمية -->
+<div class="modal" id="qtyModal">
+<div class="modal-content">
+<h4>أدخل الكمية</h4>
+<input type="number" id="qtyInput" value="1">
+<button class="btn" onclick="confirmAdd()">إضافة</button>
+</div>
+</div>
+
+<!-- نافذة الطلب -->
 <div class="modal" id="orderModal">
-  <div class="modal-content">
-    <h3>بيانات الزبون</h3>
-    <input id="firstName" placeholder="الاسم">
-    <input id="lastName" placeholder="اللقب">
-    <input id="phone" placeholder="رقم الهاتف">
-    <input id="address" placeholder="العنوان">
-    <button class="btn" onclick="sendOrder()">إرسال</button>
-  </div>
-</div>
+<div class="modal-content">
 
-<!-- نجاح -->
-<div class="modal" id="successModal">
-  <div class="modal-content">
-    <h3>✅ تم تسجيل الطلب</h3>
-    <p>سوف يتم الاتصال بك من مصلحة الزبائن</p>
-    <button class="btn" onclick="closeSuccess()">حسناً</button>
-  </div>
+<h3>تأكيد الطلب</h3>
+
+<input id="firstName" placeholder="الاسم">
+<input id="lastName" placeholder="اللقب">
+<input id="phone" placeholder="رقم الهاتف">
+<input id="address" placeholder="العنوان">
+
+<button class="btn" onclick="sendOrder()">تأكيد</button>
+
+</div>
 </div>
 
 <footer>
-📞 مصلحة الزبائن: 0659418701 <br>
-🚚 توصيل في نفس اليوم
+📞 مصلحة الزبائن: 0659418701<br>
+🚚 التوصيل في نفس اليوم داخل الولاية
 </footer>
 
 <script>
 
-/* ✅ الصور من مجلد images */
-const PRODUCTS = [
-  {name:"كراس 96 صفحة",price:120,image:"images/nassim01.jpg"},
-  {name:"قلم أزرق",price:30,image:"images/nassim02.jpg"},
-  {name:"مسطرة",price:40,image:"images/nassim02.jpg"},
-  {name:"ممحاة",price:50,image:"images/nassim03.jpg"}
+const PRODUCTS=[
+{name:"كراس 96",price:120,image:"images/nassim01.jpg"},
+{name:"قلم أزرق",price:30,image:"images/nassim02.jpg"},
+{name:"ممحاة",price:50,image:"images/nassim03.jpg"}
 ];
 
-const SHIPPING = 200;
-let cart = [];
+let cart=[];
+let selectedProduct=null;
 
+/* عرض المنتجات */
 function renderProducts(){
 let html="";
 PRODUCTS.forEach((p,i)=>{
@@ -201,22 +232,31 @@ html+=`
 <img src="${p.image}">
 <h4>${p.name}</h4>
 <div class="price">${p.price} دج</div>
-<button class="btn" onclick="add(${i})">إضافة</button>
+<button class="btn" onclick="openQty(${i})">إضافة</button>
 </div>`;
 });
 document.getElementById("products").innerHTML=html;
 }
 
-function add(i){
-let p=PRODUCTS[i];
-let f=cart.find(x=>x.name===p.name);
+/* نافذة الكمية */
+function openQty(i){
+selectedProduct=PRODUCTS[i];
+document.getElementById("qtyModal").style.display="flex";
+}
 
-if(f) f.qty++;
-else cart.push({...p,qty:1});
+/* تأكيد إضافة */
+function confirmAdd(){
+let qty=Number(document.getElementById("qtyInput").value);
 
+let f=cart.find(x=>x.name===selectedProduct.name);
+if(f) f.qty+=qty;
+else cart.push({...selectedProduct,qty});
+
+document.getElementById("qtyModal").style.display="none";
 updateCart();
 }
 
+/* تحديث السلة */
 function updateCart(){
 let html="";
 let total=0;
@@ -233,43 +273,57 @@ ${p.price} × ${p.qty} = ${sub}
 <div class="qty">
 <button onclick="change(${i},-1)">-</button>
 <button onclick="change(${i},1)">+</button>
+<button onclick="removeItem(${i})">❌</button>
 </div>
+
 </div>`;
 });
 
 document.getElementById("cartItems").innerHTML=html;
 document.getElementById("total").innerText=total;
-document.getElementById("final").innerText=total+SHIPPING;
+document.getElementById("final").innerText=total+200;
 }
 
+/* تعديل */
 function change(i,v){
 cart[i].qty+=v;
 if(cart[i].qty<=0) cart.splice(i,1);
 updateCart();
 }
 
+/* حذف */
+function removeItem(i){
+cart.splice(i,1);
+updateCart();
+}
+
+/* فتح الطلب */
 function openOrder(){
-if(cart.length===0){alert("السلة فارغة");return;}
+if(cart.length===0){
+alert("السلة فارغة");
+return;
+}
 document.getElementById("orderModal").style.display="flex";
 }
 
+/* إرسال */
 function sendOrder(){
-let ph = phone.value;
 
-if(!/^0(5|6|7)[0-9]{8}$/.test(ph)){
+if(!firstName.value || !lastName.value || !phone.value || !address.value){
+alert("املأ كل الخانات");
+return;
+}
+
+if(!/^0[567][0-9]{8}$/.test(phone.value)){
 alert("رقم غير صحيح");
 return;
 }
 
-cart=[];
-updateCart();
+alert("تم تسجيل طلبك، سيتم الاتصال بك 📞");
 
 document.getElementById("orderModal").style.display="none";
-document.getElementById("successModal").style.display="flex";
-}
-
-function closeSuccess(){
-document.getElementById("successModal").style.display="none";
+cart=[];
+updateCart();
 }
 
 renderProducts();
