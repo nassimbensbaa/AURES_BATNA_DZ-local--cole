@@ -49,7 +49,7 @@ grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
 gap:10px;
 }
 
-/* 🔥 كارد مطوّر */
+/* ===== كارد ===== */
 .card{
 background:white;
 padding:10px;
@@ -59,10 +59,10 @@ transition:0.2s;
 }
 
 .card:hover{
-transform:translateY(-2px);
+transform:translateY(-3px);
 }
 
-/* 🔥 صورة أكبر */
+/* ===== صورة أكبر ===== */
 .card img{
 width:100%;
 height:130px;
@@ -157,13 +157,39 @@ margin:5px 0;
 padding:6px;
 }
 
+/* ===== الخدمات ===== */
+.services{
+padding:15px;
+text-align:center;
+background:white;
+margin-top:10px;
+border-top:2px solid #eee;
+}
+
+.service-boxes{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:10px;
+margin-top:10px;
+}
+
+.service{
+background:#f4f6f8;
+padding:10px;
+border-radius:10px;
+width:160px;
+font-size:13px;
+box-shadow:0 2px 6px rgba(0,0,0,.05);
+}
+
 /* ===== footer ===== */
 footer{
 text-align:center;
 padding:15px;
-margin-top:20px;
 background:white;
 border-top:2px solid #eee;
+margin-top:10px;
 }
 
 </style>
@@ -234,6 +260,37 @@ border-top:2px solid #eee;
 </div>
 </div>
 
+<!-- ===== الخدمات ===== -->
+<div class="services">
+
+<h3 style="color:#f59e0b">✨ خدماتنا</h3>
+
+<div class="service-boxes">
+
+<div class="service">
+🚚 توصيل سريع<br>
+داخل الولاية في نفس اليوم
+</div>
+
+<div class="service">
+💰 الدفع عند الاستلام<br>
+بدون أي تحويل مسبق
+</div>
+
+<div class="service">
+📞 دعم سريع<br>
+رد فوري على الطلبات
+</div>
+
+<div class="service">
+📦 منتجات مضمونة<br>
+جودة عالية وأسعار مناسبة
+</div>
+
+</div>
+
+</div>
+
 <footer>
 📞 مصلحة الزبائن: 0659418701<br>
 🚚 التوصيل في نفس اليوم داخل الولاية
@@ -241,7 +298,7 @@ border-top:2px solid #eee;
 
 <script>
 
-/* 🔥 المنتجات مع تخفيض */
+/* ===== المنتجات ===== */
 const PRODUCTS=[
 {
 name:"كراس 96",
@@ -249,12 +306,6 @@ price:120,
 oldPrice:150,
 image:"images/nassim01.jpg"
 },
- {
-name:"قلم احمر",
-price:80,
-oldPrice:120,
-image:"images/nassim02.jpg"
-}, 
 {
 name:"قلم أزرق",
 price:30,
@@ -342,7 +393,7 @@ return;
 document.getElementById("orderModal").style.display="flex";
 }
 
-/* إرسال */
+/* إرسال الطلب */
 async function sendOrder(){
 
 if(!firstName.value || !lastName.value || !phone.value || !address.value){
