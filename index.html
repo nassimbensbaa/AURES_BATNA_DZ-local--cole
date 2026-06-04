@@ -104,18 +104,6 @@ border-radius:5px;
 cursor:pointer;
 }
 
-/* ===== CHECKOUT ===== */
-.checkout-btn{
-width:100%;
-margin-top:10px;
-padding:8px;
-background:linear-gradient(135deg,#f59e0b,#f97316);
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-}
-
 /* ===== MODAL ===== */
 .modal{
 display:none;
@@ -218,6 +206,16 @@ border-top:2px solid #eee;
 margin-top:10px;
 }
 
+/* ===== DOWNLOAD MODAL ===== */
+.download-box{
+background:#fff;
+padding:15px;
+border-radius:10px;
+width:90%;
+max-width:420px;
+text-align:center;
+position:relative;
+}
 </style>
 </head>
 
@@ -229,10 +227,8 @@ margin-top:10px;
 
 <div class="container">
 
-<!-- PRODUCTS -->
 <div class="products" id="products"></div>
 
-<!-- CART -->
 <div class="cart">
 <h3>🛒 السلة</h3>
 
@@ -246,12 +242,12 @@ margin-top:10px;
 الإجمالي: <b id="final">0</b> دج
 </div>
 
-<button class="checkout-btn" onclick="openOrder()">🧾 طلب</button>
+<button class="btn" onclick="openOrder()">🧾 طلب</button>
 </div>
 
 </div>
 
-<!-- ORDER MODAL -->
+<!-- ORDER -->
 <div class="modal" id="orderModal">
 <div class="modal-content">
 
@@ -271,9 +267,12 @@ margin-top:10px;
 </div>
 </div>
 
-<!-- SUCCESS + IMAGE -->
+<!-- SUCCESS -->
 <div class="modal" id="successModal">
-<div class="modal-content">
+<div class="download-box">
+
+<!-- ✖ زر الإخفاء -->
+<span class="close" onclick="closeSuccess()">✖</span>
 
 <h2 style="color:#f59e0b">✔ تم تأكيد الطلب</h2>
 
@@ -291,13 +290,13 @@ margin-top:10px;
 <div class="receipt-footer">
 شكراً لثقتكم ❤️<br>
 📞 0659418701<br>
-🚚 التوصيل في نفس اليوم - ولاية باتنة
+🚚 توصيل في نفس اليوم - ولاية باتنة
 </div>
 </div>
 
 <br>
 
-<button class="btn" onclick="downloadReceipt()">📸 تحميل قائمة الطلب</button>
+<button class="btn" onclick="downloadReceipt()">📸 تحميل الصورة</button>
 
 </div>
 </div>
@@ -309,7 +308,7 @@ margin-top:10px;
 
 <div class="service-boxes">
 
-<div class="service">🚚 توصيل في نفس اليوم<br>ولاية باتنة</div>
+<div class="service">🚚 توصيل في نفس اليوم</div>
 <div class="service">💰 الدفع عند الاستلام</div>
 <div class="service">📞 دعم سريع</div>
 <div class="service">📦 منتجات مضمونة</div>
@@ -319,7 +318,7 @@ margin-top:10px;
 </div>
 
 <footer>
-📞 0659418701 - مصلحة الزبائن
+📞 0659418701
 </footer>
 
 <script>
@@ -403,7 +402,7 @@ cart.splice(i,1);
 updateCart();
 }
 
-/* OPEN ORDER */
+/* ORDER */
 function openOrder(){
 if(cart.length===0){
 alert("السلة فارغة");
@@ -412,9 +411,12 @@ return;
 document.getElementById("orderModal").style.display="flex";
 }
 
-/* CLOSE ORDER */
 function closeOrder(){
 document.getElementById("orderModal").style.display="none";
+}
+
+function closeSuccess(){
+document.getElementById("successModal").style.display="none";
 }
 
 /* SEND */
@@ -425,7 +427,6 @@ alert("املأ كل الخانات");
 return;
 }
 
-/* receipt */
 let html="";
 let total=0;
 
@@ -443,7 +444,6 @@ ${p.price} × ${p.qty} = ${sub} دج
 document.getElementById("receiptItems").innerHTML=html;
 document.getElementById("receiptTotal").innerText=total+200;
 
-/* API */
 await fetch("/api/send",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
@@ -465,7 +465,7 @@ document.getElementById("orderModal").style.display="none";
 document.getElementById("successModal").style.display="flex";
 }
 
-/* DOWNLOAD IMAGE */
+/* DOWNLOAD */
 function downloadReceipt(){
 
 html2canvas(document.getElementById("receipt")).then(canvas=>{
