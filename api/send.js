@@ -9,7 +9,6 @@ export default async function handler(req, res) {
 
   try {
 
-    // 🔐 الرابط مخفي داخل ENV
     const GOOGLE_URL = process.env.GOOGLE_SCRIPT_URL;
 
     const body = req.body;
