@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if(req.method === "OPTIONS") return res.status(200).end();
-  if(req.method !== "POST") return res.status(405).json({ok:false});
+  if(req.method !== "POST") return res.status(405).json({ ok:false });
 
   try {
 
@@ -13,19 +13,19 @@ export default async function handler(req, res) {
 
     const response = await fetch(GOOGLE_URL, {
       method: "POST",
-      headers: {"Content-Type":"application/json"},
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(req.body)
     });
 
     const text = await response.text();
 
-    res.status(200).json({
+    return res.status(200).json({
       ok: true,
       result: text
     });
 
   } catch(err){
-    res.status(500).json({
+    return res.status(500).json({
       ok: false,
       error: err.message
     });
