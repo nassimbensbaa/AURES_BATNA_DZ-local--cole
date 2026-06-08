@@ -5,16 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مكتبة الجود</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap" rel="stylesheet">
 
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
 *{font-family:'Cairo',sans-serif;box-sizing:border-box;}
 
-body{margin:0;background:#f4f6f8;}
+body{
+margin:0;
+background:#f4f6f8;
+}
 
-/* HEADER */
+/* ===== HEADER ===== */
 header{
 text-align:center;
 padding:10px;
@@ -24,14 +27,14 @@ border-bottom:2px solid #eee;
 
 header h1{margin:0;color:#f59e0b;}
 
-/* LAYOUT */
+/* ===== LAYOUT ===== */
 .container{
 display:flex;
 gap:10px;
 padding:10px;
 }
 
-/* PRODUCTS */
+/* ===== PRODUCTS ===== */
 .products{
 flex:3;
 display:grid;
@@ -54,12 +57,7 @@ border-radius:10px;
 }
 
 .price{color:#f59e0b;font-weight:bold;}
-.old-price{
-color:#999;
-text-decoration:line-through;
-font-size:12px;
-margin-right:5px;
-}
+.old-price{color:#999;text-decoration:line-through;font-size:12px;margin-right:5px;}
 
 .btn{
 width:100%;
@@ -72,7 +70,7 @@ cursor:pointer;
 margin-top:5px;
 }
 
-/* CART */
+/* ===== CART ===== */
 .cart{
 flex:2;
 background:white;
@@ -106,7 +104,7 @@ border-radius:5px;
 cursor:pointer;
 }
 
-/* MODAL */
+/* ===== MODAL ===== */
 .modal{
 display:none;
 position:fixed;
@@ -127,6 +125,7 @@ text-align:center;
 position:relative;
 }
 
+/* ✖ زر الإغلاق */
 .close{
 position:absolute;
 top:8px;
@@ -136,7 +135,7 @@ cursor:pointer;
 color:#666;
 }
 
-/* FORM */
+/* ===== FORM ===== */
 .form{
 display:flex;
 flex-direction:column;
@@ -151,17 +150,7 @@ border:1px solid #ddd;
 border-radius:8px;
 }
 
-/* RECEIPT */
-.download-box{
-background:#fff;
-padding:15px;
-border-radius:10px;
-width:90%;
-max-width:420px;
-text-align:center;
-position:relative;
-}
-
+/* ===== RECEIPT ===== */
 #receipt{
 background:#fff;
 padding:10px;
@@ -183,7 +172,7 @@ font-size:13px;
 color:#333;
 }
 
-/* SERVICES (رجعت بالكامل) */
+/* ===== SERVICES ===== */
 .services{
 padding:15px;
 text-align:center;
@@ -208,13 +197,24 @@ width:160px;
 font-size:13px;
 }
 
-/* FOOTER */
+/* ===== FOOTER ===== */
 footer{
 text-align:center;
 padding:15px;
 background:white;
 border-top:2px solid #eee;
 margin-top:10px;
+}
+
+/* ===== DOWNLOAD MODAL ===== */
+.download-box{
+background:#fff;
+padding:15px;
+border-radius:10px;
+width:90%;
+max-width:420px;
+text-align:center;
+position:relative;
 }
 </style>
 </head>
@@ -230,7 +230,6 @@ margin-top:10px;
 <div class="products" id="products"></div>
 
 <div class="cart">
-
 <h3>🛒 السلة</h3>
 
 <div id="cartItems"></div>
@@ -244,12 +243,11 @@ margin-top:10px;
 </div>
 
 <button class="btn" onclick="openOrder()">🧾 طلب</button>
-
 </div>
 
 </div>
 
-<!-- ORDER MODAL -->
+<!-- ORDER -->
 <div class="modal" id="orderModal">
 <div class="modal-content">
 
@@ -277,10 +275,9 @@ margin-top:10px;
 
 <h2 style="color:#f59e0b">✔ تم تأكيد الطلب</h2>
 
-<p>سيتم الاتصال بك قريباً.</p>
+<p>سيتم الاتصال بك لتأكيد الطلبية.</p>
 
 <div id="receipt">
-
 <div class="receipt-header">📚 مكتبة الجود</div>
 
 <div id="receiptItems"></div>
@@ -290,10 +287,10 @@ margin-top:10px;
 <h3>الإجمالي: <span id="receiptTotal"></span> دج</h3>
 
 <div class="receipt-footer">
+شكراً لثقتكم ❤️<br>
 📞 0659418701<br>
-🚚 توصيل سريع
+🚚 توصيل في نفس اليوم - ولاية باتنة
 </div>
-
 </div>
 
 <br>
@@ -303,22 +300,40 @@ margin-top:10px;
 </div>
 </div>
 
+<!-- SERVICES -->
+<div class="services">
+
+<h3 style="color:#f59e0b">✨ خدماتنا</h3>
+
+<div class="service-boxes">
+
+<div class="service">🚚 توصيل في نفس اليوم</div>
+<div class="service">💰 الدفع عند الاستلام</div>
+<div class="service">📞 دعم سريع</div>
+<div class="service">📦 منتجات مضمونة</div>
+
+</div>
+
+</div>
+
+<footer>
+📞 0659418701
+</footer>
+
 <script>
 
 let PRODUCTS = [];
 let cart = [];
 
-/* ================= LOAD STOCK ================= */
+/* ================= LOAD FROM STOCK ================= */
 async function loadProducts(){
-
 const res = await fetch("/api/products");
 PRODUCTS = await res.json();
-
 renderProducts();
 updateCart();
 }
 
-/* ================= RENDER PRODUCTS ================= */
+/* ================= RENDER ================= */
 function renderProducts(){
 
 let html="";
@@ -329,7 +344,6 @@ html+=`
 <div class="card">
 
 <img src="${p.image}">
-
 <h4>${p.name}</h4>
 
 <div>ID: ${p.id}</div>
@@ -358,7 +372,6 @@ document.getElementById("products").innerHTML=html;
 
 /* ================= CART ================= */
 function add(i){
-
 let p = PRODUCTS[i];
 let f = cart.find(x=>x.id===p.id);
 
