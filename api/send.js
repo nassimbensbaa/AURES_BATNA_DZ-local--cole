@@ -11,36 +11,21 @@ export default async function handler(req, res) {
 
     const GOOGLE_URL = process.env.GOOGLE_SCRIPT_URL;
 
-    const body = req.body;
-
-    const payload = {
-      firstName: body.firstName,
-      lastName: body.lastName,
-      phone: body.phone,
-      address: body.address,
-      shipping: body.shipping,
-      total: body.total,
-      products: body.products
-    };
-
     const response = await fetch(GOOGLE_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(req.body)
     });
 
     const text = await response.text();
 
-    return res.status(200).json({
+    res.status(200).json({
       ok: true,
-      message: "sent",
-      google: text
+      result: text
     });
 
   } catch(err){
-    return res.status(500).json({
+    res.status(500).json({
       ok: false,
       error: err.message
     });
