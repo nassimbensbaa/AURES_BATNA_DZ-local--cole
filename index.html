@@ -7,12 +7,18 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap" rel="stylesheet">
 
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-
 <style>
-*{font-family:'Cairo',sans-serif;box-sizing:border-box;}
-body{margin:0;background:#f4f6f8;}
+*{
+font-family:'Cairo',sans-serif;
+box-sizing:border-box;
+}
 
+body{
+margin:0;
+background:#f4f6f8;
+}
+
+/* HEADER */
 header{
 text-align:center;
 padding:10px;
@@ -20,10 +26,19 @@ background:white;
 border-bottom:2px solid #eee;
 }
 
-header h1{color:#f59e0b;margin:0;}
+header h1{
+margin:0;
+color:#f59e0b;
+}
 
-.container{display:flex;gap:10px;padding:10px;}
+/* LAYOUT */
+.container{
+display:flex;
+gap:10px;
+padding:10px;
+}
 
+/* PRODUCTS */
 .products{
 flex:3;
 display:grid;
@@ -45,8 +60,19 @@ object-fit:cover;
 border-radius:10px;
 }
 
-.price{color:#f59e0b;font-weight:bold;}
+.price{
+color:#f59e0b;
+font-weight:bold;
+}
 
+.old-price{
+color:#999;
+text-decoration:line-through;
+font-size:12px;
+margin-right:5px;
+}
+
+/* BUTTON */
 .btn{
 width:100%;
 padding:6px;
@@ -54,9 +80,11 @@ background:#f59e0b;
 color:white;
 border:none;
 border-radius:8px;
+cursor:pointer;
 margin-top:5px;
 }
 
+/* CART */
 .cart{
 flex:2;
 background:white;
@@ -66,13 +94,29 @@ height:85vh;
 overflow:auto;
 position:sticky;
 top:10px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
 }
 
-.item{border-bottom:1px solid #eee;padding:8px 0;}
+.item{
+border-bottom:1px solid #eee;
+padding:8px 0;
+font-size:13px;
+}
 
-.qty{display:flex;gap:5px;align-items:center;}
+.qty{
+display:flex;
+align-items:center;
+gap:5px;
+margin-top:5px;
+}
 
-.qty button{background:#ddd;border:none;padding:3px 8px;}
+.qty button{
+padding:3px 8px;
+border:none;
+background:#ddd;
+border-radius:5px;
+cursor:pointer;
+}
 </style>
 </head>
 
@@ -94,8 +138,8 @@ top:10px;
 
 <hr>
 
-المجموع: <b id="total">0</b><br>
-الإجمالي: <b id="final">0</b>
+المجموع: <b id="total">0</b> دج<br>
+الإجمالي: <b id="final">0</b> دج
 
 <button class="btn" onclick="sendOrder()">🧾 طلب</button>
 
@@ -105,93 +149,107 @@ top:10px;
 
 <script>
 
-let PRODUCTS=[];
-let cart=[];
+let PRODUCTS = [];
+let cart = [];
 
 /* LOAD STOCK */
 async function loadProducts(){
+
 const res = await fetch("/api/products");
 PRODUCTS = await res.json();
+
 render();
 }
 
-/* RENDER */
+/* RENDER PRODUCTS */
 function render(){
 
-let html="";
+let html = "";
 
 PRODUCTS.forEach((p,i)=>{
 
-html+=`
+html += `
 <div class="card">
 
 <img src="${p.image}">
+
 <h4>${p.name}</h4>
 
 <div>ID: ${p.id}</div>
 
-<div class="price">${p.price} دج</div>
+<div>
+<span class="price">${p.price} دج</span>
+${p.oldPrice ? `<span class="old-price">${p.oldPrice} دج</span>` : ""}
+</div>
 
-<div>📦 ${p.qty}</div>
+<div style="margin-top:5px">
+📦 الكمية: ${p.qty}
+</div>
 `;
 
-if(p.qty<=0){
-html+=`<div style="color:red">❌ غير متوفر</div>`;
+if(p.qty <= 0){
+html += `<div style="color:red;font-weight:bold;">❌ غير متوفر</div>`;
 }else{
-html+=`<button class="btn" onclick="add(${i})">إضافة</button>`;
+html += `<button class="btn" onclick="add(${i})">إضافة</button>`;
 }
 
-html+=`</div>`;
+html += `</div>`;
 });
 
-document.getElementById("products").innerHTML=html;
+document.getElementById("products").innerHTML = html;
 }
 
-/* CART */
+/* ADD TO CART */
 function add(i){
-let p=PRODUCTS[i];
-let f=cart.find(x=>x.id===p.id);
+
+let p = PRODUCTS[i];
+let f = cart.find(x => x.id === p.id);
 
 if(f) f.qty++;
-else cart.push({...p,qty:1});
+else cart.push({...p, qty:1});
 
 updateCart();
 }
 
+/* CART */
 function updateCart(){
 
-let html="";
-let total=0;
+let html = "";
+let total = 0;
 
 cart.forEach((p,i)=>{
 
-total+=p.price*p.qty;
+let sub = p.price * p.qty;
+total += sub;
 
-html+=`
+html += `
 <div class="item">
+
 <b>${p.name}</b><br>
-${p.price} × ${p.qty}
+
+${p.price} × ${p.qty} = ${sub}
 
 <div class="qty">
 <button onclick="change(${i},-1)">-</button>
 <span>${p.qty}</span>
 <button onclick="change(${i},1)">+</button>
 </div>
+
 </div>`;
 });
 
-document.getElementById("cartItems").innerHTML=html;
-document.getElementById("total").innerText=total;
-document.getElementById("final").innerText=total+200;
+document.getElementById("cartItems").innerHTML = html;
+document.getElementById("total").innerText = total;
+document.getElementById("final").innerText = total + 200;
 }
 
 function change(i,v){
-cart[i].qty+=v;
-if(cart[i].qty<=0) cart.splice(i,1);
+cart[i].qty += v;
+if(cart[i].qty <= 0) cart.splice(i,1);
 updateCart();
 }
 
-/* ORDER */
+/* SEND ORDER */
 async function sendOrder(){
 
 await fetch("/api/send",{
@@ -207,9 +265,10 @@ products:cart
 })
 });
 
-cart=[];
+cart = [];
 updateCart();
-alert("تم الطلب");
+
+alert("تم الطلب بنجاح");
 }
 
 /* INIT */
