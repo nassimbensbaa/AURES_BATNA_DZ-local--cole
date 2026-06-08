@@ -17,7 +17,7 @@ margin:0;
 background:#f4f6f8;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 header{
 text-align:center;
 padding:10px;
@@ -27,14 +27,13 @@ border-bottom:2px solid #eee;
 
 header h1{margin:0;color:#f59e0b;}
 
-/* ===== LAYOUT ===== */
+/* LAYOUT */
 .container{
 display:flex;
 gap:10px;
 padding:10px;
 }
 
-/* ===== PRODUCTS ===== */
 .products{
 flex:3;
 display:grid;
@@ -70,7 +69,7 @@ cursor:pointer;
 margin-top:5px;
 }
 
-/* ===== CART ===== */
+/* CART */
 .cart{
 flex:2;
 background:white;
@@ -104,7 +103,7 @@ border-radius:5px;
 cursor:pointer;
 }
 
-/* ===== MODAL ===== */
+/* MODAL */
 .modal{
 display:none;
 position:fixed;
@@ -125,7 +124,6 @@ text-align:center;
 position:relative;
 }
 
-/* ✖ زر الإغلاق */
 .close{
 position:absolute;
 top:8px;
@@ -135,7 +133,6 @@ cursor:pointer;
 color:#666;
 }
 
-/* ===== FORM ===== */
 .form{
 display:flex;
 flex-direction:column;
@@ -150,7 +147,17 @@ border:1px solid #ddd;
 border-radius:8px;
 }
 
-/* ===== RECEIPT ===== */
+/* RECEIPT */
+.download-box{
+background:#fff;
+padding:15px;
+border-radius:10px;
+width:90%;
+max-width:420px;
+text-align:center;
+position:relative;
+}
+
 #receipt{
 background:#fff;
 padding:10px;
@@ -169,10 +176,9 @@ font-size:18px;
 text-align:center;
 margin-top:10px;
 font-size:13px;
-color:#333;
 }
 
-/* ===== SERVICES ===== */
+/* SERVICES */
 .services{
 padding:15px;
 text-align:center;
@@ -197,24 +203,12 @@ width:160px;
 font-size:13px;
 }
 
-/* ===== FOOTER ===== */
 footer{
 text-align:center;
 padding:15px;
 background:white;
 border-top:2px solid #eee;
 margin-top:10px;
-}
-
-/* ===== DOWNLOAD MODAL ===== */
-.download-box{
-background:#fff;
-padding:15px;
-border-radius:10px;
-width:90%;
-max-width:420px;
-text-align:center;
-position:relative;
 }
 </style>
 </head>
@@ -271,14 +265,14 @@ position:relative;
 <div class="modal" id="successModal">
 <div class="download-box">
 
-<!-- ✖ زر الإخفاء -->
 <span class="close" onclick="closeSuccess()">✖</span>
 
 <h2 style="color:#f59e0b">✔ تم تأكيد الطلب</h2>
 
-<p>سيتم الاتصال بك لتأكيد الطلبية.</p>
+<p>سيتم الاتصال بك قريباً.</p>
 
 <div id="receipt">
+
 <div class="receipt-header">📚 مكتبة الجود</div>
 
 <div id="receiptItems"></div>
@@ -288,10 +282,10 @@ position:relative;
 <h3>الإجمالي: <span id="receiptTotal"></span> دج</h3>
 
 <div class="receipt-footer">
-شكراً لثقتكم ❤️<br>
 📞 0659418701<br>
-🚚 توصيل في نفس اليوم - ولاية باتنة
+🚚 توصيل سريع
 </div>
+
 </div>
 
 <br>
@@ -301,73 +295,74 @@ position:relative;
 </div>
 </div>
 
-<!-- SERVICES -->
-<div class="services">
-
-<h3 style="color:#f59e0b">✨ خدماتنا</h3>
-
-<div class="service-boxes">
-
-<div class="service">🚚 توصيل في نفس اليوم</div>
-<div class="service">💰 الدفع عند الاستلام</div>
-<div class="service">📞 دعم سريع</div>
-<div class="service">📦 منتجات مضمونة</div>
-
-</div>
-
-</div>
-
-<footer>
-📞 0659418701
-</footer>
-
 <script>
 
-const PRODUCTS=[
-{name:"كراس 96",price:120,oldPrice:150,image:"images/nassim01.jpg"},
-{name:"قلم أزرق",price:30,oldPrice:50,image:"images/nassim02.jpg"},
-{name:"ممحاة",price:50,oldPrice:70,image:"images/nassim03.jpg"}
-];
+let PRODUCTS = [];
+let cart = [];
 
-let cart=[];
+/* ================= LOAD PRODUCTS ================= */
+async function loadProducts(){
 
-/* PRODUCTS */
+const res = await fetch("/api/products");
+PRODUCTS = await res.json();
+
+renderProducts();
+updateCart();
+}
+
+/* ================= RENDER ================= */
 function renderProducts(){
+
 let html="";
+
 PRODUCTS.forEach((p,i)=>{
+
 html+=`
 <div class="card">
+
 <img src="${p.image}">
+
 <h4>${p.name}</h4>
 
 <div>
 <span class="price">${p.price} دج</span>
-${p.oldPrice?`<span class="old-price">${p.oldPrice} دج</span>`:""}
+${p.oldPrice ? `<span class="old-price">${p.oldPrice} دج</span>` : ""}
 </div>
+`;
 
-<button class="btn" onclick="add(${i})">إضافة</button>
-</div>`;
+if(p.qty <= 0){
+html+=`<div style="color:red;font-weight:bold;">❌ غير متوفر</div>`;
+}else{
+html+=`<button class="btn" onclick="add(${i})">إضافة</button>`;
+}
+
+html+=`</div>`;
 });
+
 document.getElementById("products").innerHTML=html;
 }
 
-/* ADD */
+/* ================= CART ================= */
 function add(i){
-let p=PRODUCTS[i];
-let f=cart.find(x=>x.name===p.name);
+
+let p = PRODUCTS[i];
+let f = cart.find(x=>x.name===p.name);
+
 if(f) f.qty++;
 else cart.push({...p,qty:1});
+
 updateCart();
 }
 
-/* CART */
 function updateCart(){
+
 let html="";
 let total=0;
 
 cart.forEach((p,i)=>{
-let sub=p.price*p.qty;
-total+=sub;
+
+let sub = p.price * p.qty;
+total += sub;
 
 html+=`
 <div class="item">
@@ -380,7 +375,6 @@ ${p.price} × ${p.qty} = ${sub}
 <button onclick="change(${i},1)">+</button>
 <button onclick="removeItem(${i})">❌</button>
 </div>
-
 </div>`;
 });
 
@@ -389,20 +383,18 @@ document.getElementById("total").innerText=total;
 document.getElementById("final").innerText=total+200;
 }
 
-/* CHANGE */
 function change(i,v){
-cart[i].qty+=v;
+cart[i].qty += v;
 if(cart[i].qty<=0) cart.splice(i,1);
 updateCart();
 }
 
-/* REMOVE */
 function removeItem(i){
 cart.splice(i,1);
 updateCart();
 }
 
-/* ORDER */
+/* ================= ORDER ================= */
 function openOrder(){
 if(cart.length===0){
 alert("السلة فارغة");
@@ -419,7 +411,6 @@ function closeSuccess(){
 document.getElementById("successModal").style.display="none";
 }
 
-/* SEND */
 async function sendOrder(){
 
 if(!firstName.value||!lastName.value||!phone.value||!address.value){
@@ -427,17 +418,14 @@ alert("املأ كل الخانات");
 return;
 }
 
+let total = cart.reduce((a,b)=>a+b.price*b.qty,0);
+
 let html="";
-let total=0;
-
 cart.forEach(p=>{
-let sub=p.price*p.qty;
-total+=sub;
-
 html+=`
 <div>
 <b>${p.name}</b><br>
-${p.price} × ${p.qty} = ${sub} دج
+${p.price} × ${p.qty} = ${p.price*p.qty} دج
 </div><hr>`;
 });
 
@@ -453,7 +441,6 @@ lastName:lastName.value,
 phone:phone.value,
 address:address.value,
 shipping:200,
-total:total+200,
 products:cart
 })
 });
@@ -465,9 +452,8 @@ document.getElementById("orderModal").style.display="none";
 document.getElementById("successModal").style.display="flex";
 }
 
-/* DOWNLOAD */
+/* ================= DOWNLOAD ================= */
 function downloadReceipt(){
-
 html2canvas(document.getElementById("receipt")).then(canvas=>{
 let a=document.createElement("a");
 a.download="commande.png";
@@ -476,8 +462,8 @@ a.click();
 });
 }
 
-renderProducts();
-updateCart();
+/* ================= INIT ================= */
+loadProducts();
 
 </script>
 
