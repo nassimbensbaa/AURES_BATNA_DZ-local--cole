@@ -87,13 +87,23 @@ box-shadow:0 0 10px rgba(0,0,0,.1);
 border-bottom:1px solid #eee;
 padding:8px 0;
 font-size:13px;
+display:flex;
+flex-direction:column;
+gap:6px;
+}
+
+.cart-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:8px;
+flex-wrap:wrap;
 }
 
 .qty{
 display:flex;
 align-items:center;
 gap:5px;
-margin-top:5px;
 }
 
 .qty button{
@@ -104,6 +114,14 @@ border-radius:5px;
 cursor:pointer;
 }
 
+.delete-btn{
+background:red;
+color:white;
+border:none;
+padding:3px 8px;
+border-radius:5px;
+cursor:pointer;
+}
 /* ===== MODAL ===== */
 .modal{
 display:none;
@@ -406,15 +424,22 @@ total += sub;
 html+=`
 <div class="item">
 
-<b>${p.name}</b><br>
+<div class="cart-row">
 
-${p.price} × ${p.qty} = ${sub}  دج
+<span><b>${p.name}</b></span>
 
-<div class="qty">
+<span class="qty">
 <button onclick="change(${i},-1)">-</button>
 <span>${p.qty}</span>
 <button onclick="change(${i},1)">+</button>
-<button onclick="removeItem(${i})">❌</button>
+</span>
+
+<span>${p.price} دج</span>
+
+<span><b>${sub} دج</b></span>
+
+<button class="delete-btn" onclick="removeItem(${i})">حذف</button>
+
 </div>
 
 </div>`;
