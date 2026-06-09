@@ -6,7 +6,6 @@
 <title>مكتبة الجود</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap" rel="stylesheet">
-
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
@@ -17,24 +16,27 @@ margin:0;
 background:#f4f6f8;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 header{
-text-align:center;
-padding:10px;
 background:white;
+padding:10px;
 border-bottom:2px solid #eee;
+text-align:center;
 }
 
-header h1{margin:0;color:#f59e0b;}
+header img{
+width:100%;
+max-height:140px;
+object-fit:contain;
+}
 
-/* ===== LAYOUT ===== */
+/* PRODUCTS */
 .container{
 display:flex;
 gap:10px;
 padding:10px;
 }
 
-/* ===== PRODUCTS ===== */
 .products{
 flex:3;
 display:grid;
@@ -53,11 +55,10 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
 width:100%;
 height:180px;
 object-fit:contain;
-background:#fff;
 }
 
 .price{color:#f59e0b;font-weight:bold;}
-.old-price{color:#999;text-decoration:line-through;font-size:12px;margin-right:5px;}
+.old-price{color:#999;text-decoration:line-through;font-size:12px;}
 
 .btn{
 width:100%;
@@ -70,49 +71,68 @@ cursor:pointer;
 margin-top:5px;
 }
 
-/* ===== CART ===== */
-.cart{
-flex:2;
-background:white;
-padding:10px;
-border-radius:10px;
-height:85vh;
-overflow:auto;
-position:sticky;
-top:10px;
-box-shadow:0 0 10px rgba(0,0,0,.1);
+/* ========== BOTTOM SHEET CART ========== */
+.cart-btn{
+position:fixed;
+bottom:20px;
+left:20px;
+width:55px;
+height:55px;
+border-radius:50%;
+background:#f59e0b;
+color:white;
+border:none;
+font-size:22px;
+box-shadow:0 5px 15px rgba(0,0,0,0.3);
+z-index:999;
+cursor:pointer;
 }
 
+.cart-sheet{
+position:fixed;
+bottom:-100%;
+left:0;
+width:100%;
+height:70%;
+background:white;
+border-radius:20px 20px 0 0;
+box-shadow:0 -5px 20px rgba(0,0,0,0.2);
+transition:0.3s;
+z-index:1000;
+padding:10px;
+overflow:auto;
+}
+
+.cart-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.close{
+background:red;
+color:white;
+border:none;
+padding:5px 10px;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* ITEM */
 .item{
 background:#fff;
 border-radius:12px;
 padding:10px;
 margin-bottom:10px;
 box-shadow:0 2px 8px rgba(0,0,0,0.08);
-font-size:13px;
-}
-
-.item-name{
-font-weight:bold;
-margin-bottom:5px;
 }
 
 .cart-row{
 display:flex;
-align-items:center;
 justify-content:space-between;
+align-items:center;
 gap:8px;
 flex-wrap:wrap;
-}
-
-.price{
-color:#f59e0b;
-font-weight:bold;
-}
-
-.subtotal{
-font-weight:bold;
-color:#333;
 }
 
 .qty{
@@ -130,7 +150,6 @@ background:#ddd;
 padding:3px 8px;
 border-radius:6px;
 cursor:pointer;
-font-size:14px;
 }
 
 .delete-btn{
@@ -141,7 +160,8 @@ padding:5px 10px;
 border-radius:8px;
 cursor:pointer;
 }
-/* ===== MODAL ===== */
+
+/* MODAL */
 .modal{
 display:none;
 position:fixed;
@@ -158,72 +178,30 @@ padding:15px;
 border-radius:10px;
 width:90%;
 max-width:420px;
-text-align:center;
-position:relative;
-
-/* 🔥 الحل */
-max-height:90vh;
-overflow-y:auto;
 }
 
-/* ✖ زر الإغلاق */
-.close{
-position:absolute;
-top:8px;
-left:10px;
-font-size:18px;
-cursor:pointer;
-color:#666;
-z-index:10;
-background:white;
-padding:2px 6px;
-border-radius:5px;
-}
-
-/* ===== FORM ===== */
-.form{
-display:flex;
-flex-direction:column;
-gap:8px;
-margin-top:10px;
-}
-
+/* FORM */
 .form input{
 width:100%;
 padding:8px;
+margin:5px 0;
 border:1px solid #ddd;
 border-radius:8px;
 }
 
-/* ===== RECEIPT ===== */
+/* RECEIPT */
 #receipt{
 background:#fff;
 padding:10px;
 border-radius:10px;
-text-align:right;
 }
 
-.receipt-header{
-text-align:center;
-font-weight:bold;
-color:#f59e0b;
-font-size:18px;
-}
-
-.receipt-footer{
-text-align:center;
-margin-top:10px;
-font-size:13px;
-color:#333;
-}
-
-/* ===== SERVICES ===== */
+/* SERVICES */
 .services{
-padding:15px;
 text-align:center;
+padding:15px;
 background:white;
 margin-top:10px;
-border-top:2px solid #eee;
 }
 
 .service-boxes{
@@ -231,7 +209,6 @@ display:flex;
 flex-wrap:wrap;
 justify-content:center;
 gap:10px;
-margin-top:10px;
 }
 
 .service{
@@ -239,47 +216,38 @@ background:#f4f6f8;
 padding:10px;
 border-radius:10px;
 width:160px;
-font-size:13px;
 }
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 footer{
 text-align:center;
 padding:15px;
 background:white;
-border-top:2px solid #eee;
 margin-top:10px;
-}
-
-/* ===== DOWNLOAD MODAL ===== */
-.download-box{
-background:#fff;
-padding:15px;
-border-radius:10px;
-width:90%;
-max-width:420px;
-text-align:center;
-position:relative;
-
-/* 🔥 مهم */
-max-height:90vh;
-overflow-y:auto;
 }
 </style>
 </head>
 
 <body>
 
-<header style="background:white;padding:10px;border-bottom:2px solid #eee;">
-<img src="images/logo.png" style="width:100%;max-height:140px;object-fit:contain;">
+<header>
+<img src="images/logo.png">
 </header>
 
 <div class="container">
-
 <div class="products" id="products"></div>
+</div>
 
-<div class="cart">
+<!-- زر السلة -->
+<button class="cart-btn" onclick="openCart()">🛒</button>
+
+<!-- السلة الاحترافية -->
+<div class="cart-sheet" id="cartSheet">
+
+<div class="cart-header">
 <h3>🛒 السلة</h3>
+<button class="close" onclick="closeCart()">✖</button>
+</div>
 
 <div id="cartItems"></div>
 
@@ -292,7 +260,6 @@ overflow-y:auto;
 </div>
 
 <button class="btn" onclick="openOrder()">🧾 طلب</button>
-</div>
 
 </div>
 
@@ -300,14 +267,12 @@ overflow-y:auto;
 <div class="modal" id="orderModal">
 <div class="modal-content">
 
-<span class="close" onclick="closeOrder()">✖</span>
-
 <h3>تأكيد الطلب</h3>
 
 <div class="form">
 <input id="firstName" placeholder="الاسم">
 <input id="lastName" placeholder="اللقب">
-<input id="phone" placeholder="رقم الهاتف">
+<input id="phone" placeholder="الهاتف">
 <input id="address" placeholder="العنوان">
 </div>
 
@@ -318,150 +283,90 @@ overflow-y:auto;
 
 <!-- SUCCESS -->
 <div class="modal" id="successModal">
-<div class="download-box">
+<div class="modal-content">
 
-<span class="close" onclick="closeSuccess()">✖</span>
-
-<h2 style="color:#f59e0b">✔ تم تأكيد الطلب</h2>
-
-<p>سيتم الاتصال بك لتأكيد الطلبية قم بتحميل وصل الطلب من الاسفل.</p>
+<h2 style="color:#f59e0b">✔ تم الطلب</h2>
 
 <div id="receipt">
-<div class="receipt-header">📚 مكتبة الجود</div>
-
 <div id="receiptItems"></div>
-
-<hr>
-
-<h3>الإجمالي: <span id="receiptTotal"></span> دج</h3>
-
-<div class="receipt-footer">
-شكراً لثقتكم ❤️<br>
-📞 0659418701<br>
-🚚 توصيل في نفس اليوم - ولاية باتنة
-</div>
+<h3>الإجمالي: <span id="receiptTotal"></span></h3>
 </div>
 
-<br>
-
-<button class="btn" onclick="downloadReceipt()">📸 تحميل الصورة</button>
+<button class="btn" onclick="downloadReceipt()">تحميل</button>
 
 </div>
 </div>
 
 <!-- SERVICES -->
 <div class="services">
-
-<h3 style="color:#f59e0b">✨ خدماتنا</h3>
-
-<div class="service-boxes">
-
-<div class="service">🚚 توصيل في نفس اليوم</div>
+<div class="service">🚚 توصيل سريع</div>
 <div class="service">💰 الدفع عند الاستلام</div>
-<div class="service">📞 دعم سريع</div>
-<div class="service">📦 منتجات مضمونة</div>
-
+<div class="service">📞 دعم</div>
+<div class="service">📦 جودة</div>
 </div>
 
-</div>
-
-<footer>
-📞 0659418701
-</footer>
+<footer>📞 0659418701</footer>
 
 <script>
 
-let PRODUCTS = [];
-let cart = [];
+let PRODUCTS=[];
+let cart=[];
 
-/* ================= LOAD FROM STOCK ================= */
 async function loadProducts(){
-const res = await fetch("/api/products");
-PRODUCTS = await res.json();
+let res=await fetch("/api/products");
+PRODUCTS=await res.json();
 renderProducts();
-updateCart();
 }
 
-/* ================= RENDER ================= */
 function renderProducts(){
-
 let html="";
-
 PRODUCTS.forEach((p,i)=>{
-
 html+=`
 <div class="card">
-
 <img src="${p.image}">
 <h4>${p.name}</h4>
-
-<div>ID: ${p.id}</div>
-
-<div>
-<span class="price">${p.price} دج</span>
-${p.oldPrice ? `<span class="old-price">${p.oldPrice} دج</span>` : ""}
-</div>
-
-<div style="margin-top:5px">
-📦 الكمية: ${p.qty}
-</div>
-`;
-
-if(p.qty <= 0){
-html+=`<div style="color:red;font-weight:bold;">❌ غير متوفر</div>`;
-}else{
-html+=`<button class="btn" onclick="add(${i})">إضافة</button>`;
-}
-
-html+=`</div>`;
+<div class="price">${p.price} دج</div>
+<button class="btn" onclick="add(${i})">إضافة</button>
+</div>`;
 });
-
 document.getElementById("products").innerHTML=html;
 }
 
-/* ================= CART ================= */
 function add(i){
-let p = PRODUCTS[i];
-let f = cart.find(x=>x.id===p.id);
-
+let p=PRODUCTS[i];
+let f=cart.find(x=>x.id===p.id);
 if(f) f.qty++;
 else cart.push({...p,qty:1});
-
 updateCart();
+openCart();
 }
 
 function updateCart(){
-
 let html="";
 let total=0;
 
 cart.forEach((p,i)=>{
-
-let sub = p.price * p.qty;
-total += sub;
+let sub=p.price*p.qty;
+total+=sub;
 
 html+=`
 <div class="item">
 
-<div class="item-name">${p.name}</div>
-
-<div class="price">السعر: ${p.price} دج</div>
+<b>${p.name}</b>
 
 <div class="cart-row">
 
 <div class="qty">
-<span>الكمية:</span>
 <button onclick="change(${i},-1)">-</button>
 <span>${p.qty}</span>
 <button onclick="change(${i},1)">+</button>
 </div>
 
-<div class="subtotal">${sub} دج</div>
+<div>${sub} دج</div>
 
 <button class="delete-btn" onclick="removeItem(${i})">🗑</button>
 
 </div>
-
 </div>`;
 });
 
@@ -469,8 +374,9 @@ document.getElementById("cartItems").innerHTML=html;
 document.getElementById("total").innerText=total;
 document.getElementById("final").innerText=total+200;
 }
+
 function change(i,v){
-cart[i].qty += v;
+cart[i].qty+=v;
 if(cart[i].qty<=0) cart.splice(i,1);
 updateCart();
 }
@@ -480,76 +386,34 @@ cart.splice(i,1);
 updateCart();
 }
 
-/* ================= ORDER ================= */
-function openOrder(){
-if(cart.length===0){
-alert("السلة فارغة");
-return;
+function openCart(){
+document.getElementById("cartSheet").style.bottom="0";
 }
+
+function closeCart(){
+document.getElementById("cartSheet").style.bottom="-100%";
+}
+
+function openOrder(){
 document.getElementById("orderModal").style.display="flex";
 }
 
-function closeOrder(){
-document.getElementById("orderModal").style.display="none";
-}
-
-function closeSuccess(){
-document.getElementById("successModal").style.display="none";
-}
-
-/* ================= SEND ================= */
-async function sendOrder(){
-
-if(!firstName.value||!lastName.value||!phone.value||!address.value){
-alert("املأ كل الخانات");
-return;
-}
-
-let total = cart.reduce((a,b)=>a+b.price*b.qty,0);
-
-let html="";
-cart.forEach(p=>{
-html+=`
-<div>
-<b>${p.name}</b><br>
-${p.price} × ${p.qty} = ${p.price*p.qty} دج
-</div><hr>`;
-});
-
-document.getElementById("receiptItems").innerHTML=html;
-document.getElementById("receiptTotal").innerText=total+200;
-
-await fetch("/api/send",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-firstName:firstName.value,
-lastName:lastName.value,
-phone:phone.value,
-address:address.value,
-shipping:200,
-products:cart
-})
-});
-
+function sendOrder(){
+alert("تم الطلب");
 cart=[];
 updateCart();
-
-document.getElementById("orderModal").style.display="none";
-document.getElementById("successModal").style.display="flex";
+closeCart();
 }
 
-/* ================= DOWNLOAD ================= */
 function downloadReceipt(){
-html2canvas(document.getElementById("receipt")).then(canvas=>{
+html2canvas(document.getElementById("receipt")).then(c=>{
 let a=document.createElement("a");
-a.download="commande.png";
-a.href=canvas.toDataURL();
+a.download="order.png";
+a.href=c.toDataURL();
 a.click();
 });
 }
 
-/* ================= INIT ================= */
 loadProducts();
 
 </script>
