@@ -84,12 +84,17 @@ box-shadow:0 0 10px rgba(0,0,0,.1);
 }
 
 .item{
-border-bottom:1px solid #eee;
-padding:8px 0;
+background:#fff;
+border-radius:12px;
+padding:10px;
+margin-bottom:10px;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
 font-size:13px;
-display:flex;
-flex-direction:column;
-gap:6px;
+}
+
+.item-name{
+font-weight:bold;
+margin-bottom:5px;
 }
 
 .cart-row{
@@ -100,26 +105,40 @@ gap:8px;
 flex-wrap:wrap;
 }
 
+.price{
+color:#f59e0b;
+font-weight:bold;
+}
+
+.subtotal{
+font-weight:bold;
+color:#333;
+}
+
 .qty{
 display:flex;
 align-items:center;
 gap:5px;
+background:#f4f6f8;
+padding:3px 6px;
+border-radius:8px;
 }
 
 .qty button{
-padding:3px 8px;
 border:none;
 background:#ddd;
-border-radius:5px;
+padding:3px 8px;
+border-radius:6px;
 cursor:pointer;
+font-size:14px;
 }
 
 .delete-btn{
-background:red;
+background:#ff3b30;
 color:white;
 border:none;
-padding:3px 8px;
-border-radius:5px;
+padding:5px 10px;
+border-radius:8px;
 cursor:pointer;
 }
 /* ===== MODAL ===== */
@@ -424,21 +443,21 @@ total += sub;
 html+=`
 <div class="item">
 
+<div class="item-name">${p.name}</div>
+
+<div class="price">السعر: ${p.price} دج</div>
+
 <div class="cart-row">
 
-<span><b>${p.name}</b></span>
-
-<span class="qty">
+<div class="qty">
 <button onclick="change(${i},-1)">-</button>
 <span>${p.qty}</span>
 <button onclick="change(${i},1)">+</button>
-</span>
+</div>
 
-<span>${p.price} دج</span>
+<div class="subtotal">${sub} دج</div>
 
-<span><b>${sub} دج</b></span>
-
-<button class="delete-btn" onclick="removeItem(${i})">حذف</button>
+<button class="delete-btn" onclick="removeItem(${i})">🗑</button>
 
 </div>
 
@@ -449,7 +468,6 @@ document.getElementById("cartItems").innerHTML=html;
 document.getElementById("total").innerText=total;
 document.getElementById("final").innerText=total+200;
 }
-
 function change(i,v){
 cart[i].qty += v;
 if(cart[i].qty<=0) cart.splice(i,1);
