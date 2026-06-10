@@ -55,7 +55,22 @@ height:180px;
 object-fit:contain;
 background:#fff;
 }
+.card h4{
+margin:5px 0 3px 0;
+font-size:14px;
+}
 
+.card .meta{
+margin:2px 0;
+font-size:12px;
+line-height:1.2;
+color:#333;
+}
+
+.card .price{
+margin:3px 0;
+display:block;
+}
 .price{color:#f59e0b;font-weight:bold;}
 .old-price{color:#999;text-decoration:line-through;font-size:12px;margin-right:5px;}
 
@@ -395,16 +410,14 @@ html+=`
 <img src="${p.image}">
 <h4>${p.name}</h4>
 
-<div>ID: ${p.id}</div>
+<div class="meta">ID: ${p.id}</div>
 
-<div>
-<span class="price">${p.price} دج</span>
-${p.oldPrice ? `<span class="old-price">${p.oldPrice} دج</span>` : ""}
+<div class="meta">
+  <span class="price">${p.price} دج</span>
+  ${p.oldPrice ? `<span class="old-price">${p.oldPrice} دج</span>` : ""}
 </div>
 
-<div style="margin-top:5px">
-📦 الكمية: ${p.qty}
-</div>
+<div class="meta">📦 الكمية: ${p.qty}</div>
 `;
 
 if(p.qty <= 0){
