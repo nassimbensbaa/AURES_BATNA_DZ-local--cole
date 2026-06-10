@@ -86,16 +86,48 @@ margin-top:5px;
 }
 
 /* ===== CART ===== */
+/* ===== CART HEADER FIXED ===== */
+.cart-header{
+position: sticky;
+top: 0;
+z-index: 1000;
+background: #fff;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px;
+border-bottom: 2px solid #eee;
+box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* زر الطلب */
+.cart-header button{
+background:#f59e0b;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:8px;
+cursor:pointer;
+font-size:13px;
+}
+
+/* السلة الجديدة */
 .cart{
 flex:2;
 background:white;
-padding:10px;
 border-radius:10px;
 height:85vh;
-overflow:auto;
-position:sticky;
-top:10px;
+overflow:hidden;
+display:flex;
+flex-direction:column;
 box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+/* منطقة العناصر فقط scroll */
+#cartItems{
+flex:1;
+overflow-y:auto;
+padding:10px;
 }
 
 .item{
@@ -294,19 +326,23 @@ overflow-y:auto;
 <div class="products" id="products"></div>
 
 <div class="cart">
-<h3>🛒 السلة</h3>
 
-<div id="cartItems"></div>
+  <!-- الشريط العلوي الثابت -->
+  <div class="cart-header">
+    <div>🛒 السلة</div>
+    <button onclick="openOrder()">🧾 الطلب</button>
+  </div>
 
-<hr>
+  <!-- العناصر (قابلة للتمرير) -->
+  <div id="cartItems"></div>
 
-<div>
-المجموع: <b id="total">0</b> دج<br>
-التوصيل: 200 دج<br>
-الإجمالي: <b id="final">0</b> دج
-</div>
+  <!-- المجموع ثابت في الأسفل داخل السلة -->
+  <div style="padding:10px;border-top:1px solid #eee;">
+    المجموع: <b id="total">0</b> دج<br>
+    التوصيل: 200 دج<br>
+    الإجمالي: <b id="final">0</b> دج
+  </div>
 
-<button class="btn" onclick="openOrder()">🧾 طلب</button>
 </div>
 
 </div>
