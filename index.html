@@ -328,9 +328,8 @@ border-top:2px solid #eee;
 let PRODUCTS=[];
 let cart=[];
 
-/* 🔊 صوت إضافة */
-const addSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3");
-
+/* 🔊 الصوت */
+const addSound = new Audio("sounds/add.mp3");
 async function loadProducts(){
 const res=await fetch("/api/products");
 PRODUCTS=await res.json();
@@ -353,13 +352,17 @@ document.getElementById("products").innerHTML=html;
 
 /* إضافة */
 function add(i){
-let p=PRODUCTS[i];
-let f=cart.find(x=>x.id===p.id);
+
+let p = PRODUCTS[i];
+let f = cart.find(x => x.id === p.id);
 
 if(f) f.qty++;
-else cart.push({...p,qty:1});
+else cart.push({...p, qty:1});
 
-addSound.play(); // 🔊 الصوت
+/* 🔊 الصوت */
+addSound.currentTime = 0;
+addSound.play();
+
 update();
 }
 
