@@ -36,21 +36,24 @@ padding:10px;
 
 /* ===== PRODUCTS ===== */
 .products{
+flex:3;
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-gap:8px;
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+gap:10px;
 }
 
 .card{
-padding:8px;
-border-radius:10px;
-font-size:12px;
+background:white;
+padding:10px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
 }
 
 .card img{
 width:100%;
-height:140px;
+height:180px;
 object-fit:contain;
+background:#fff;
 }
 
 .price{color:#f59e0b;font-weight:bold;}
