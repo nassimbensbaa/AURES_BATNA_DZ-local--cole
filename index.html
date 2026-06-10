@@ -11,21 +11,32 @@
 <style>
 *{font-family:'Cairo',sans-serif;box-sizing:border-box;}
 
-body{margin:0;background:#f4f6f8;}
+body{
+margin:0;
+background:#f4f6f8;
+}
 
 /* ===== HEADER ===== */
 header{
 position:sticky;
 top:0;
-z-index:2000;
+z-index:1000;
 background:#fff;
 padding:10px;
 border-bottom:2px solid #eee;
 }
-header img{width:100%;max-height:120px;object-fit:contain;}
+header img{
+width:100%;
+max-height:120px;
+object-fit:contain;
+}
 
 /* ===== LAYOUT ===== */
-.container{display:flex;gap:10px;padding:10px;}
+.container{
+display:flex;
+gap:10px;
+padding:10px;
+}
 
 /* ===== PRODUCTS ===== */
 .products{
@@ -42,7 +53,11 @@ border-radius:12px;
 box-shadow:0 2px 8px rgba(0,0,0,.1);
 }
 
-.card img{width:100%;height:170px;object-fit:contain;}
+.card img{
+width:100%;
+height:170px;
+object-fit:contain;
+}
 
 .btn{
 width:100%;
@@ -108,6 +123,12 @@ justify-content:space-between;
 align-items:center;
 }
 
+/* ===== TOTAL ===== */
+.cart-footer{
+padding:10px;
+border-top:1px solid #eee;
+}
+
 /* ===== SERVICES ===== */
 .services{
 padding:15px;
@@ -121,7 +142,6 @@ display:flex;
 flex-wrap:wrap;
 gap:10px;
 justify-content:center;
-margin-top:10px;
 }
 
 .service{
@@ -168,20 +188,6 @@ padding:10px;
 border-radius:10px;
 text-align:right;
 }
-
-.receipt-header{
-text-align:center;
-color:#f59e0b;
-font-weight:bold;
-font-size:18px;
-}
-
-.service-icons{
-display:flex;
-justify-content:space-around;
-margin:10px 0;
-font-size:12px;
-}
 </style>
 </head>
 
@@ -193,8 +199,10 @@ font-size:12px;
 
 <div class="container">
 
+<!-- PRODUCTS -->
 <div class="products" id="products"></div>
 
+<!-- CART -->
 <div class="cart">
 
 <div class="cart-header">
@@ -204,7 +212,7 @@ font-size:12px;
 
 <div id="cartItems"></div>
 
-<div style="padding:10px;border-top:1px solid #eee;">
+<div class="cart-footer">
 المجموع: <b id="total">0</b> دج<br>
 التوصيل: 200 دج<br>
 الإجمالي: <b id="final">0</b> دج
@@ -218,10 +226,10 @@ font-size:12px;
 <h3>✨ خدماتنا</h3>
 
 <div class="service-boxes">
-<div class="service">🚚 توصيل سريع</div>
-<div class="service">💰 دفع عند الاستلام</div>
-<div class="service">📞 دعم الزبائن</div>
-<div class="service">⭐ جودة مضمونة</div>
+<div>🚚 توصيل سريع</div>
+<div>💰 دفع عند الاستلام</div>
+<div>📞 دعم الزبائن</div>
+<div>⭐ جودة عالية</div>
 </div>
 </div>
 
@@ -251,11 +259,11 @@ font-size:12px;
 
 <h3 style="color:#f59e0b">✔ تم تأكيد الطلب</h3>
 
-<p>يمكنك تحميل وصل الطلب بالأسفل</p>
+<p>تحميل وصل الطلب</p>
 
 <div id="receipt"></div>
 
-<button class="btn" onclick="downloadReceipt()">📸 تحميل وصل الطلب</button>
+<button class="btn" onclick="downloadReceipt()">📸 تحميل الوصل</button>
 
 </div>
 </div>
