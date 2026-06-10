@@ -349,12 +349,17 @@ html+=`
 <div class="item">
 <div class="item-name">${p.name}</div>
 <div class="cart-row">
+
 <div class="qty">
 <button onclick="chg(${i},-1)">-</button>
 ${p.qty}
 <button onclick="chg(${i},1)">+</button>
 </div>
+
 <div>${sub} دج</div>
+
+<button onclick="removeItem(${i})" class="delete-btn">🗑</button>
+
 </div>
 </div>`;
 });
