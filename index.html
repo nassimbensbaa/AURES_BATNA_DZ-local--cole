@@ -6,7 +6,6 @@
 <title>مكتبة الجود</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap" rel="stylesheet">
-
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <style>
@@ -14,63 +13,73 @@
 
 body{
 margin:0;
+padding-top:140px;
 background:#f4f6f8;
 }
 
-/* ===== HEADER ===== */
+/* ===== HEADER FIXED ===== */
 header{
-text-align:center;
-padding:10px;
+position:fixed;
+top:0;
+right:0;
+left:0;
+z-index:1000;
 background:white;
+padding:8px;
 border-bottom:2px solid #eee;
 }
 
-header h1{margin:0;color:#f59e0b;}
+header img{
+width:100%;
+max-height:120px;
+object-fit:contain;
+}
 
 /* ===== LAYOUT ===== */
 .container{
 display:flex;
 gap:10px;
 padding:10px;
+align-items:flex-start;
 }
 
-/* ===== PRODUCTS ===== */
+/* ===== PRODUCTS SCROLL ONLY ===== */
 .products{
 flex:3;
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
 gap:10px;
+max-height:calc(100vh - 150px);
+overflow-y:auto;
+padding-right:5px;
 }
 
+/* ===== CARD ===== */
 .card{
 background:white;
-padding:10px;
+padding:8px;
 border-radius:12px;
 box-shadow:0 2px 8px rgba(0,0,0,.1);
 }
 
 .card img{
 width:100%;
-height:180px;
+height:140px;
 object-fit:contain;
-background:#fff;
 }
+
 .card h4{
 margin:5px 0 3px 0;
-font-size:14px;
+font-size:13px;
 }
 
 .card .meta{
 margin:2px 0;
-font-size:12px;
+font-size:11px;
 line-height:1.2;
 color:#333;
 }
 
-.card .price{
-margin:3px 0;
-display:block;
-}
 .price{color:#f59e0b;font-weight:bold;}
 .old-price{color:#999;text-decoration:line-through;font-size:12px;margin-right:5px;}
 
@@ -83,10 +92,24 @@ border:none;
 border-radius:8px;
 cursor:pointer;
 margin-top:5px;
+font-size:13px;
 }
 
 /* ===== CART ===== */
-/* ===== CART HEADER FIXED ===== */
+.cart{
+flex:2;
+background:white;
+border-radius:10px;
+height:calc(100vh - 150px);
+overflow:hidden;
+display:flex;
+flex-direction:column;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+position:sticky;
+top:130px;
+}
+
+/* ===== CART HEADER ===== */
 .cart-header{
 position: sticky;
 top: 0;
@@ -100,7 +123,6 @@ border-bottom: 2px solid #eee;
 box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-/* زر الطلب */
 .cart-header button{
 background:#f59e0b;
 color:white;
@@ -111,19 +133,7 @@ cursor:pointer;
 font-size:13px;
 }
 
-/* السلة الجديدة */
-.cart{
-flex:2;
-background:white;
-border-radius:10px;
-height:85vh;
-overflow:hidden;
-display:flex;
-flex-direction:column;
-box-shadow:0 0 10px rgba(0,0,0,.1);
-}
-
-/* منطقة العناصر فقط scroll */
+/* ===== CART ITEMS SCROLL ===== */
 #cartItems{
 flex:1;
 overflow-y:auto;
@@ -139,27 +149,14 @@ box-shadow:0 2px 8px rgba(0,0,0,0.08);
 font-size:13px;
 }
 
-.item-name{
-font-weight:bold;
-margin-bottom:5px;
-}
+.item-name{font-weight:bold;margin-bottom:5px;}
 
 .cart-row{
 display:flex;
-align-items:center;
 justify-content:space-between;
+align-items:center;
 gap:8px;
 flex-wrap:wrap;
-}
-
-.price{
-color:#f59e0b;
-font-weight:bold;
-}
-
-.subtotal{
-font-weight:bold;
-color:#333;
 }
 
 .qty{
@@ -177,7 +174,6 @@ background:#ddd;
 padding:3px 8px;
 border-radius:6px;
 cursor:pointer;
-font-size:14px;
 }
 
 .delete-btn{
@@ -188,6 +184,7 @@ padding:5px 10px;
 border-radius:8px;
 cursor:pointer;
 }
+
 /* ===== MODAL ===== */
 .modal{
 display:none;
@@ -207,13 +204,10 @@ width:90%;
 max-width:420px;
 text-align:center;
 position:relative;
-
-/* 🔥 الحل */
 max-height:90vh;
 overflow-y:auto;
 }
 
-/* ✖ زر الإغلاق */
 .close{
 position:absolute;
 top:8px;
@@ -221,7 +215,6 @@ left:10px;
 font-size:18px;
 cursor:pointer;
 color:#666;
-z-index:10;
 background:white;
 padding:2px 6px;
 border-radius:5px;
@@ -242,83 +235,20 @@ border:1px solid #ddd;
 border-radius:8px;
 }
 
-/* ===== RECEIPT ===== */
-#receipt{
-background:#fff;
-padding:10px;
-border-radius:10px;
-text-align:right;
-}
-
-.receipt-header{
-text-align:center;
-font-weight:bold;
-color:#f59e0b;
-font-size:18px;
-}
-
-.receipt-footer{
-text-align:center;
-margin-top:10px;
-font-size:13px;
-color:#333;
-}
-
-/* ===== SERVICES ===== */
-.services{
-padding:15px;
-text-align:center;
-background:white;
-margin-top:10px;
-border-top:2px solid #eee;
-}
-
-.service-boxes{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:10px;
-margin-top:10px;
-}
-
-.service{
-background:#f4f6f8;
-padding:10px;
-border-radius:10px;
-width:160px;
-font-size:13px;
-}
-
 /* ===== FOOTER ===== */
 footer{
 text-align:center;
 padding:15px;
 background:white;
-border-top:2px solid #eee;
 margin-top:10px;
-}
-
-/* ===== DOWNLOAD MODAL ===== */
-.download-box{
-background:#fff;
-padding:15px;
-border-radius:10px;
-width:90%;
-max-width:420px;
-text-align:center;
-position:relative;
-
-/* 🔥 مهم */
-max-height:90vh;
-overflow-y:auto;
 }
 </style>
 </head>
 
 <body>
 
-<header style="background:white;padding:10px;border-bottom:2px solid #eee;">
-<img src="images/logo.png" style="width:100%;max-height:140px;object-fit:contain;">
+<header>
+<img src="images/logo.png">
 </header>
 
 <div class="container">
@@ -327,16 +257,13 @@ overflow-y:auto;
 
 <div class="cart">
 
-  <!-- الشريط العلوي الثابت -->
   <div class="cart-header">
     <div>🛒 السلة</div>
     <button onclick="openOrder()">🧾 الطلب</button>
   </div>
 
-  <!-- العناصر (قابلة للتمرير) -->
   <div id="cartItems"></div>
 
-  <!-- المجموع ثابت في الأسفل داخل السلة -->
   <div style="padding:10px;border-top:1px solid #eee;">
     المجموع: <b id="total">0</b> دج<br>
     التوصيل: 200 دج<br>
@@ -350,9 +277,7 @@ overflow-y:auto;
 <!-- ORDER -->
 <div class="modal" id="orderModal">
 <div class="modal-content">
-
 <span class="close" onclick="closeOrder()">✖</span>
-
 <h3>تأكيد الطلب</h3>
 
 <div class="form">
@@ -363,154 +288,62 @@ overflow-y:auto;
 </div>
 
 <button class="btn" onclick="sendOrder()">تأكيد</button>
-
 </div>
 </div>
-
-<!-- SUCCESS -->
-<div class="modal" id="successModal">
-<div class="download-box">
-
-<span class="close" onclick="closeSuccess()">✖</span>
-
-<h2 style="color:#f59e0b">✔ تم تأكيد الطلب</h2>
-
-<p>سيتم الاتصال بك لتأكيد الطلبية قم بتحميل وصل الطلب من الاسفل.</p>
-
-<div id="receipt">
-<div class="receipt-header">📚 مكتبة الجود</div>
-
-<div id="receiptItems"></div>
-
-<hr>
-
-<h3>الإجمالي: <span id="receiptTotal"></span> دج</h3>
-
-<div class="receipt-footer">
-شكراً لثقتكم ❤️<br>
-📞 0659418701<br>
-🚚 توصيل في نفس اليوم - ولاية باتنة
-</div>
-</div>
-
-<br>
-
-<button class="btn" onclick="downloadReceipt()">📸 تحميل الصورة</button>
-
-</div>
-</div>
-
-<!-- SERVICES -->
-<div class="services">
-
-<h3 style="color:#f59e0b">✨ خدماتنا</h3>
-
-<div class="service-boxes">
-
-<div class="service">🚚 توصيل في نفس اليوم</div>
-<div class="service">💰 الدفع عند الاستلام</div>
-<div class="service">📞 دعم سريع</div>
-<div class="service">📦 منتجات مضمونة</div>
-
-</div>
-
-</div>
-
-<footer>
-📞 0659418701
-</footer>
 
 <script>
+let PRODUCTS=[];
+let cart=[];
 
-let PRODUCTS = [];
-let cart = [];
-
-/* ================= LOAD FROM STOCK ================= */
 async function loadProducts(){
-const res = await fetch("/api/products");
-PRODUCTS = await res.json();
+const res=await fetch("/api/products");
+PRODUCTS=await res.json();
 renderProducts();
 updateCart();
 }
 
-/* ================= RENDER ================= */
 function renderProducts(){
-
 let html="";
-
 PRODUCTS.forEach((p,i)=>{
-
 html+=`
 <div class="card">
-
 <img src="${p.image}">
 <h4>${p.name}</h4>
-
-<div class="meta">ID: ${p.id}</div>
-
-<div class="meta">
-  <span class="price">${p.price} دج</span>
-  ${p.oldPrice ? `<span class="old-price">${p.oldPrice} دج</span>` : ""}
-</div>
-
-<div class="meta">📦 الكمية: ${p.qty}</div>
-`;
-
-if(p.qty <= 0){
-html+=`<div style="color:red;font-weight:bold;">❌ غير متوفر</div>`;
-}else{
-html+=`<button class="btn" onclick="add(${i})">إضافة</button>`;
-}
-
-html+=`</div>`;
+<div class="meta">${p.price} دج</div>
+<button class="btn" onclick="add(${i})">إضافة</button>
+</div>`;
 });
-
 document.getElementById("products").innerHTML=html;
 }
 
-/* ================= CART ================= */
 function add(i){
-let p = PRODUCTS[i];
-let f = cart.find(x=>x.id===p.id);
-
+let p=PRODUCTS[i];
+let f=cart.find(x=>x.id===p.id);
 if(f) f.qty++;
 else cart.push({...p,qty:1});
-
 updateCart();
 }
 
 function updateCart(){
-
 let html="";
 let total=0;
 
 cart.forEach((p,i)=>{
-
-let sub = p.price * p.qty;
-total += sub;
+let sub=p.price*p.qty;
+total+=sub;
 
 html+=`
 <div class="item">
-
 <div class="item-name">${p.name}</div>
-
-<div class="price">السعر: ${p.price} دج</div>
-
 <div class="cart-row">
-
 <div class="qty">
-<span>الكمية:</span>
 <button onclick="change(${i},-1)">-</button>
 <span>${p.qty}</span>
 <button onclick="change(${i},1)">+</button>
 </div>
-
-<div class="subtotal">${sub} دج</div>
-
+<div>${sub} دج</div>
 <button class="delete-btn" onclick="removeItem(${i})">🗑</button>
-
 </div>
-
 </div>`;
 });
 
@@ -518,8 +351,9 @@ document.getElementById("cartItems").innerHTML=html;
 document.getElementById("total").innerText=total;
 document.getElementById("final").innerText=total+200;
 }
+
 function change(i,v){
-cart[i].qty += v;
+cart[i].qty+=v;
 if(cart[i].qty<=0) cart.splice(i,1);
 updateCart();
 }
@@ -529,12 +363,7 @@ cart.splice(i,1);
 updateCart();
 }
 
-/* ================= ORDER ================= */
 function openOrder(){
-if(cart.length===0){
-alert("السلة فارغة");
-return;
-}
 document.getElementById("orderModal").style.display="flex";
 }
 
@@ -542,65 +371,11 @@ function closeOrder(){
 document.getElementById("orderModal").style.display="none";
 }
 
-function closeSuccess(){
-document.getElementById("successModal").style.display="none";
+function sendOrder(){
+alert("تم إرسال الطلب");
 }
 
-/* ================= SEND ================= */
-async function sendOrder(){
-
-if(!firstName.value||!lastName.value||!phone.value||!address.value){
-alert("املأ كل الخانات");
-return;
-}
-
-let total = cart.reduce((a,b)=>a+b.price*b.qty,0);
-
-let html="";
-cart.forEach(p=>{
-html+=`
-<div>
-<b>${p.name}</b><br>
-${p.price} × ${p.qty} = ${p.price*p.qty} دج
-</div><hr>`;
-});
-
-document.getElementById("receiptItems").innerHTML=html;
-document.getElementById("receiptTotal").innerText=total+200;
-
-await fetch("/api/send",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-firstName:firstName.value,
-lastName:lastName.value,
-phone:phone.value,
-address:address.value,
-shipping:200,
-products:cart
-})
-});
-
-cart=[];
-updateCart();
-
-document.getElementById("orderModal").style.display="none";
-document.getElementById("successModal").style.display="flex";
-}
-
-/* ================= DOWNLOAD ================= */
-function downloadReceipt(){
-html2canvas(document.getElementById("receipt")).then(canvas=>{
-let a=document.createElement("a");
-a.download="commande.png";
-a.href=canvas.toDataURL();
-a.click();
-});
-}
-
-/* ================= INIT ================= */
 loadProducts();
-
 </script>
 
 </body>
